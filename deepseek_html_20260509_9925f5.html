@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <title>Active Packers & Movers | Lead Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f0f2f5;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            padding-bottom: 60px;
+        }
+
+        .navbar-modern {
+            background: linear-gradient(135deg, #0b2b5c 0%, #1a4a8b 100%);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 0.5rem 0;
+        }
+
+        .brand-icon {
+            font-size: 1.5rem;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+
+        /* Stats Cards - Compact */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 6px 4px;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .stat-card i {
+            font-size: 1.4rem;
+            margin-bottom: 2px;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 9px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            color: #5e6873;
+        }
+
+        .stat-number {
+            font-size: 1.3rem;
+            font-weight: 800;
+            line-height: 1.2;
+            color: #1e2f41;
+        }
+
+        .action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0 8px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .btn-circle {
+            border-radius: 40px;
+            padding: 5px 14px;
+            font-weight: 500;
+            font-size: 0.75rem;
+        }
+
+        /* Horizontal Filter Row */
+        .filter-row-horizontal {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-box-horizontal {
+            flex: 2;
+            position: relative;
+            min-width: 150px;
+        }
+
+        .search-box-horizontal i {
+            position: absolute;
+            left: 11px;
+            top: 8px;
+            color: #8d9aa8;
+            font-size: 0.9rem;
+        }
+
+        .search-box-horizontal input {
+            width: 100%;
+            padding: 7px 10px 7px 32px;
+            border-radius: 25px;
+            border: 1px solid #dee2e6;
+            background: white;
+            font-size: 0.85rem;
+        }
+
+        .status-select-horizontal {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .status-select-horizontal select {
+            width: 100%;
+            padding: 7px 10px;
+            border-radius: 25px;
+            background: white;
+            border: 1px solid #dee2e6;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* Calendar Button - Fixed */
+        .calendar-btn-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .calendar-trigger {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 25px;
+            padding: 6px 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .calendar-trigger:hover {
+            background: #f8f9fa;
+            border-color: #0b2b5c;
+        }
+
+        .calendar-trigger i {
+            font-size: 1rem;
+            color: #0b2b5c;
+        }
+
+        .calendar-trigger span {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        
+        /* Hidden date input for flatpickr */
+        .hidden-date-input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+            width: 0;
+            height: 0;
+        }
+
+        /* Lead Cards - Compact */
+        .lead-card {
+            background: white;
+            border-radius: 16px;
+            margin-bottom: 8px;
+            padding: 10px 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            border: 1px solid #eef2f6;
+        }
+
+        .lead-card:hover {
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        .lead-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .customer-name {
+            font-weight: 800;
+            font-size: 0.95rem;
+            color: #0a2540;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .badge-source {
+            background: #eef2ff;
+            color: #1e4a8a;
+            font-size: 0.6rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 50px;
+        }
+
+        .phone-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin: 5px 0 4px;
+            flex-wrap: wrap;
+        }
+
+        .phone-link {
+            text-decoration: none;
+            font-weight: 600;
+            color: #1f6392;
+            background: #eef2fa;
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .whatsapp-link {
+            background: #dcfce7;
+            color: #0e6b2b;
+        }
+
+        .location-row {
+            font-size: 0.7rem;
+            background: #f8fafc;
+            padding: 5px 8px;
+            border-radius: 14px;
+            margin: 6px 0;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .status-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 10px;
+            border-radius: 30px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            background: #f1f5f9;
+            color: #334155;
+        }
+
+        .cost-badge {
+            font-weight: 800;
+            background: #fff7ed;
+            padding: 2px 8px;
+            border-radius: 25px;
+            font-size: 0.75rem;
+        }
+
+        .followup-tag {
+            background: #fff3cd;
+            border-radius: 25px;
+            padding: 2px 8px;
+            font-size: 0.65rem;
+            font-weight: 600;
+        }
+
+        .date-badge {
+            background: #e7f1ff;
+            border-radius: 25px;
+            padding: 2px 8px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: #0b5ed7;
+        }
+
+        .action-icons {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+            border-top: 1px solid #edf2f7;
+            padding-top: 8px;
+            justify-content: flex-end;
+        }
+
+        .action-icon {
+            background: none;
+            border: none;
+            font-size: 1rem;
+            color: #4b5569;
+            transition: 0.1s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 500;
+            padding: 2px 6px;
+            border-radius: 20px;
+        }
+
+        .action-icon i {
+            font-size: 1rem;
+        }
+
+        .action-icon:hover {
+            background: #f0f2f5;
+            color: #0d6efd;
+        }
+
+        .modal-content {
+            border-radius: 24px;
+            border: none;
+        }
+
+        .modal-header {
+            border-bottom: none;
+            background: #0b2b5c;
+            color: white;
+            border-radius: 24px 24px 0 0;
+            padding: 12px 16px;
+        }
+
+        .fab-add {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #0b2b5c;
+            width: 50px;
+            height: 50px;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 1050;
+            border: none;
+            color: white;
+            font-size: 1.6rem;
+        }
+
+        @media (min-width: 768px) {
+            .stats-grid {
+                gap: 12px;
+            }
+            .stat-card {
+                padding: 8px;
+            }
+            .lead-card {
+                padding: 10px 14px;
+                margin-bottom: 8px;
+            }
+            .fab-add {
+                position: static;
+                margin-left: 10px;
+                width: auto;
+                height: auto;
+                padding: 6px 18px;
+                border-radius: 40px;
+                font-size: 0.85rem;
+            }
+            .action-icons {
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .filter-row-horizontal {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            .search-box-horizontal {
+                min-width: 100%;
+            }
+            .status-select-horizontal {
+                flex: 1;
+            }
+        }
+
+        .toast-top {
+            position: fixed;
+            top: 70px;
+            right: 12px;
+            left: 12px;
+            z-index: 1090;
+        }
+        
+        /* Flatpickr calendar high z-index */
+        .flatpickr-calendar {
+            z-index: 99999 !important;
+            position: absolute !important;
+        }
+    </style>
+</head>
+<body>
+
+<div class="toast-top" id="flashContainer"></div>
+
+<nav class="navbar-modern">
+    <div class="container">
+        <div class="d-flex align-items-center text-white">
+            <i class="bi bi-truck brand-icon"></i>
+            <div>
+                <span class="fw-bold" style="font-size: 1rem;">Active Packers & Movers</span>
+                <small class="d-block d-sm-inline-block ms-0 ms-sm-2" style="font-size: 0.6rem; opacity: 0.9;">LEAD MASTER</small>
+            </div>
+        </div>
+        <div>
+            <span class="badge bg-light text-dark" style="font-size: 0.7rem;"><i class="bi bi-database"></i> Cloud</span>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-2">
+    <!-- Stats Cards -->
+    <div class="stats-grid" id="statsContainer"></div>
+
+    <!-- Action Bar -->
+    <div class="action-bar">
+        <h6 class="m-0 fw-bold" style="font-size: 0.9rem;"><i class="bi bi-people-fill"></i> <span id="leadCountSpan">0</span> Leads</h6>
+        <div class="d-flex gap-2">
+            <a href="/export_excel" class="btn btn-outline-success btn-circle btn-sm"><i class="bi bi-file-earmark-spreadsheet"></i> <span class="d-none d-sm-inline">Export</span></a>
+            <button class="btn btn-primary btn-circle btn-sm d-none d-md-inline-flex" data-bs-toggle="modal" data-bs-target="#addLeadModal"><i class="bi bi-plus-lg"></i> Add Lead</button>
+        </div>
+    </div>
+
+    <!-- Horizontal Filter Row -->
+    <div class="filter-row-horizontal">
+        <div class="search-box-horizontal">
+            <i class="bi bi-search"></i>
+            <input type="text" id="globalSearch" placeholder="Search name, phone, city...">
+        </div>
+        
+        <div class="status-select-horizontal">
+            <select id="statusFilterGlobal">
+                <option value="all">📌 All Status</option>
+                {% for status in statuses %}
+                <option value="{{ status }}">{{ status }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="calendar-btn-wrapper">
+            <input type="text" id="dateRangePicker" class="hidden-date-input">
+            <div class="calendar-trigger" id="calendarTrigger">
+                <i class="bi bi-calendar-range"></i>
+                <span id="calendarLabel">Date Range</span>
+                <i class="bi bi-chevron-down"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leads List -->
+    <div id="leadsListContainer"></div>
+</div>
+
+<!-- FAB for mobile -->
+<button class="fab-add d-md-none" data-bs-toggle="modal" data-bs-target="#addLeadModal">
+    <i class="bi bi-plus-lg"></i>
+</button>
+
+<!-- Add Lead Modal -->
+<div class="modal fade" id="addLeadModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-truck"></i> New Lead</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="addLeadForm">
+                <div class="modal-body" style="max-height: 60vh; overflow-y: auto;">
+                    <div class="row g-2">
+                        <div class="col-12"><label class="form-label small fw-bold">Full name *</label><input type="text" name="name" class="form-control form-control-sm" required></div>
+                        <div class="col-12"><label class="form-label small fw-bold">Phone *</label><input type="tel" name="phone" class="form-control form-control-sm" required></div>
+                        <div class="col-12"><label class="form-label small fw-bold">Alternate phone</label><input type="tel" name="alternate_phone" class="form-control form-control-sm"></div>
+                        <div class="col-6"><label class="form-label small fw-bold">Source</label><select name="source" class="form-select form-select-sm">{% for src in sources %}<option>{{ src }}</option>{% endfor %}</select></div>
+                        <div class="col-6"><label class="form-label small fw-bold">Status</label><select name="status" class="form-select form-select-sm">{% for st in statuses %}<option>{{ st }}</option>{% endfor %}</select></div>
+                        <div class="col-6"><label class="form-label small fw-bold">From location</label><input type="text" name="from_location" class="form-control form-control-sm"></div>
+                        <div class="col-6"><label class="form-label small fw-bold">To location</label><input type="text" name="to_location" class="form-control form-control-sm"></div>
+                        <div class="col-6"><label class="form-label small fw-bold">Estimate (₹)</label><input type="number" name="cost_estimate" class="form-control form-control-sm" value="0"></div>
+                        <div class="col-6"><label class="form-label small fw-bold">Shifting date</label><input type="date" name="shifting_date" class="form-control form-control-sm"></div>
+                        <div class="col-12"><label class="form-label small fw-bold">Goods / Notes</label><textarea name="notes" class="form-control form-control-sm" rows="2"></textarea></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-sm btn-primary px-4">Save Lead</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModalGlobal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title"><i class="bi bi-pencil-square"></i> Edit Lead</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="editFormDynamic">
+                <input type="hidden" name="lead_id" id="edit_lead_id">
+                <div class="modal-body">
+                    <div class="row g-2">
+                        <div class="col-12"><label class="small">Name *</label><input type="text" name="name" id="edit_name" class="form-control form-control-sm" required></div>
+                        <div class="col-12"><label class="small">Phone *</label><input type="tel" name="phone" id="edit_phone" class="form-control form-control-sm" required></div>
+                        <div class="col-12"><label class="small">Alt Phone</label><input type="tel" name="alternate_phone" id="edit_alt_phone" class="form-control form-control-sm"></div>
+                        <div class="col-6"><label class="small">Source</label><select name="source" id="edit_source" class="form-select form-select-sm">{% for src in sources %}<option>{{ src }}</option>{% endfor %}</select></div>
+                        <div class="col-6"><label class="small">Status</label><select name="status" id="edit_status" class="form-select form-select-sm">{% for st in statuses %}<option>{{ st }}</option>{% endfor %}</select></div>
+                        <div class="col-6"><label class="small">From</label><input type="text" name="from_location" id="edit_from" class="form-control form-control-sm"></div>
+                        <div class="col-6"><label class="small">To</label><input type="text" name="to_location" id="edit_to" class="form-control form-control-sm"></div>
+                        <div class="col-6"><label class="small">Cost est.</label><input type="number" name="cost_estimate" id="edit_cost" class="form-control form-control-sm"></div>
+                        <div class="col-6"><label class="small">Final Cost</label><input type="number" name="final_cost" id="edit_final" class="form-control form-control-sm"></div>
+                        <div class="col-6"><label class="small">Advance paid</label><input type="number" name="advance_paid" id="edit_advance" class="form-control form-control-sm"></div>
+                        <div class="col-6"><label class="small">Payment Status</label><select name="payment_status" id="edit_payment" class="form-select form-select-sm"><option>Pending</option><option>Partial</option><option>Completed</option></select></div>
+                        <div class="col-6"><label class="small">Followup Date</label><input type="date" name="followup_date" id="edit_followup" class="form-control form-control-sm"></div>
+                        <div class="col-12"><label class="small">Notes</label><textarea name="notes" id="edit_notes" class="form-control form-control-sm" rows="2"></textarea></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-sm btn-primary">Update Lead</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://npmcdn.com/flatpickr/dist/l10n/hi.js"></script>
+<script>
+    let leadsData = [];
+    let statusFilter = "all";
+    let searchTerm = "";
+    let dateRangeStart = null;
+    let dateRangeEnd = null;
+
+    async function fetchLeads() {
+        try {
+            const res = await fetch('/api/leads?t=' + Date.now());
+            if(res.ok) {
+                leadsData = await res.json();
+                leadsData.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+                renderLeadsAndStats();
+            } else {
+                if(window.initialLeads) {
+                    leadsData = window.initialLeads;
+                    leadsData.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+                    renderLeadsAndStats();
+                }
+            }
+        } catch(e) { console.warn(e); }
+    }
+
+    function filterByDateRange(lead) {
+        if(!dateRangeStart && !dateRangeEnd) return true;
+        if(!lead.created_at) return false;
+        const leadDate = new Date(lead.created_at);
+        leadDate.setHours(0, 0, 0, 0);
+        
+        if(dateRangeStart && dateRangeEnd) {
+            const start = new Date(dateRangeStart);
+            start.setHours(0, 0, 0, 0);
+            const end = new Date(dateRangeEnd);
+            end.setHours(23, 59, 59, 999);
+            return leadDate >= start && leadDate <= end;
+        } else if(dateRangeStart) {
+            const start = new Date(dateRangeStart);
+            start.setHours(0, 0, 0, 0);
+            return leadDate >= start;
+        } else if(dateRangeEnd) {
+            const end = new Date(dateRangeEnd);
+            end.setHours(23, 59, 59, 999);
+            return leadDate <= end;
+        }
+        return true;
+    }
+
+    function renderLeadsAndStats() {
+        let filtered = leadsData.filter(lead => {
+            if(statusFilter !== "all" && lead.status !== statusFilter) return false;
+            if(searchTerm !== "") {
+                const haystack = (lead.name + " " + lead.phone + " " + (lead.from_location||"") + " " + (lead.to_location||"")).toLowerCase();
+                if(!haystack.includes(searchTerm.toLowerCase())) return false;
+            }
+            if(!filterByDateRange(lead)) return false;
+            return true;
+        });
+
+        const total = filtered.length;
+        document.getElementById('leadCountSpan').innerText = total;
+        const adsense = filtered.filter(l=>l.source === 'Google Adsense').length;
+        const justdial = filtered.filter(l=>l.source === 'Justdial').length;
+        const whatsapp = filtered.filter(l=>l.source === 'WhatsApp').length;
+        
+        document.getElementById('statsContainer').innerHTML = `
+            <div class="stat-card"><i class="bi bi-people-fill text-primary"></i><div class="stat-number">${total}</div><div class="stat-label">LEADS</div></div>
+            <div class="stat-card"><i class="bi bi-google text-danger"></i><div class="stat-number">${adsense}</div><div class="stat-label">ADSENSE</div></div>
+            <div class="stat-card"><i class="bi bi-building text-info"></i><div class="stat-number">${justdial}</div><div class="stat-label">JUSTDIAL</div></div>
+            <div class="stat-card"><i class="bi bi-whatsapp text-success"></i><div class="stat-number">${whatsapp}</div><div class="stat-label">WHATSAPP</div></div>
+        `;
+
+        const container = document.getElementById('leadsListContainer');
+        if(filtered.length === 0) {
+            container.innerHTML = `<div class="text-center p-4 bg-white rounded-4 shadow-sm"><i class="bi bi-inbox fs-3"></i><p class="mt-1 small">No leads found</p></div>`;
+            return;
+        }
+        
+        container.innerHTML = filtered.map(lead => {
+            const daysOld = lead.created_at ? Math.floor((new Date() - new Date(lead.created_at)) / (1000*60*60*24)) : '?';
+            return `
+            <div class="lead-card" data-lead-id="${lead.id}">
+                <div class="lead-header">
+                    <div class="customer-name">
+                        ${escapeHtml(lead.name)} 
+                        <span class="badge-source">${escapeHtml(lead.source)}</span>
+                    </div>
+                    <span class="status-chip" style="background:${getStatusColor(lead.status)}20; color:${getStatusColor(lead.status)};">${lead.status}</span>
+                </div>
+                <div class="phone-group">
+                    <a href="tel:${lead.phone}" class="phone-link"><i class="bi bi-telephone-fill"></i> ${lead.phone}</a>
+                    ${lead.alternate_phone ? `<a href="tel:${lead.alternate_phone}" class="phone-link"><i class="bi bi-phone"></i> ${lead.alternate_phone}</a>` : ''}
+                    <a href="https://wa.me/91${lead.phone}" target="_blank" class="phone-link whatsapp-link"><i class="bi bi-whatsapp"></i> WhatsApp</a>
+                </div>
+                <div class="location-row">
+                    <i class="bi bi-geo-alt-fill text-secondary"></i> 
+                    <strong>${lead.from_location || '—'}</strong> 
+                    <i class="bi bi-arrow-right-short"></i> 
+                    <strong>${lead.to_location || '—'}</strong>
+                    ${lead.distance_km ? `<span class="badge bg-light text-dark ms-1" style="font-size: 0.6rem;">${lead.distance_km} km</span>` : ''}
+                </div>
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-1 mt-1">
+                    <div class="cost-badge">💰 ₹ ${Number(lead.cost_estimate || 0).toLocaleString()}</div>
+                    <div class="date-badge"><i class="bi bi-clock"></i> ${daysOld} दिन पहले</div>
+                    ${lead.followup_date ? `<div class="followup-tag"><i class="bi bi-bell"></i> ${lead.followup_date}</div>` : ''}
+                </div>
+                <div class="action-icons">
+                    <button class="action-icon call-logger" data-id="${lead.id}" data-name="${escapeHtml(lead.name)}"><i class="bi bi-chat-text"></i> <span class="d-none d-sm-inline">Log</span></button>
+                    <button class="action-icon edit-lead-btn" data-id="${lead.id}"><i class="bi bi-pencil-square"></i> <span class="d-none d-sm-inline">Edit</span></button>
+                    <a href="/delete_lead/${lead.id}" class="action-icon text-danger" onclick="return confirm('Delete lead?')"><i class="bi bi-trash3"></i> <span class="d-none d-sm-inline">Del</span></a>
+                </div>
+            </div>
+        `}).join('');
+
+        attachEventListeners();
+    }
+
+    function attachEventListeners() {
+        document.querySelectorAll('.edit-lead-btn').forEach(btn => {
+            btn.removeEventListener('click', handleEditClick);
+            btn.addEventListener('click', handleEditClick);
+        });
+        document.querySelectorAll('.call-logger').forEach(btn => {
+            btn.removeEventListener('click', handleCallClick);
+            btn.addEventListener('click', handleCallClick);
+        });
+    }
+    
+    function handleEditClick(e) {
+        const id = parseInt(e.currentTarget.dataset.id);
+        const lead = leadsData.find(l => l.id === id);
+        if(lead) openEditModal(lead);
+    }
+    
+    function handleCallClick(e) {
+        const id = e.currentTarget.dataset.id;
+        const name = e.currentTarget.dataset.name;
+        const note = prompt(`📞 Call log for ${name}:`, "Discussed price & shifting date");
+        if(note && note.trim()) addCallLog(id, note);
+    }
+
+    async function addCallLog(leadId, note) {
+        const formData = new URLSearchParams();
+        formData.append('call_note', note);
+        const res = await fetch(`/add_call_log/${leadId}`, { method: 'POST', body: formData });
+        if(res.ok) {
+            showFlash("✅ Call log saved", "success");
+            fetchLeads();
+        } else {
+            showFlash("❌ Error saving log", "danger");
+        }
+    }
+
+    function openEditModal(lead) {
+        document.getElementById('edit_lead_id').value = lead.id;
+        document.getElementById('edit_name').value = lead.name || '';
+        document.getElementById('edit_phone').value = lead.phone || '';
+        document.getElementById('edit_alt_phone').value = lead.alternate_phone || '';
+        document.getElementById('edit_source').value = lead.source || 'Google Adsense';
+        document.getElementById('edit_status').value = lead.status || 'New Lead';
+        document.getElementById('edit_from').value = lead.from_location || '';
+        document.getElementById('edit_to').value = lead.to_location || '';
+        document.getElementById('edit_cost').value = lead.cost_estimate || 0;
+        document.getElementById('edit_final').value = lead.final_cost || 0;
+        document.getElementById('edit_advance').value = lead.advance_paid || 0;
+        document.getElementById('edit_payment').value = lead.payment_status || 'Pending';
+        document.getElementById('edit_followup').value = lead.followup_date || '';
+        document.getElementById('edit_notes').value = lead.notes || '';
+        const editModal = new bootstrap.Modal(document.getElementById('editModalGlobal'));
+        editModal.show();
+    }
+
+    document.getElementById('editFormDynamic').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const leadId = document.getElementById('edit_lead_id').value;
+        const formData = new FormData(e.target);
+        const res = await fetch(`/edit_lead/${leadId}`, { method: 'POST', body: formData });
+        if(res.ok) {
+            showFlash("✅ Lead updated", "success");
+            bootstrap.Modal.getInstance(document.getElementById('editModalGlobal')).hide();
+            fetchLeads();
+        } else {
+            showFlash("❌ Update failed", "danger");
+        }
+    });
+
+    document.getElementById('addLeadForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const res = await fetch('/add_lead', { method: 'POST', body: formData });
+        if(res.ok) {
+            showFlash("✅ Lead added! सबसे ऊपर दिखेगा", "success");
+            bootstrap.Modal.getInstance(document.getElementById('addLeadModal')).hide();
+            e.target.reset();
+            fetchLeads();
+        } else {
+            const text = await res.text();
+            if(text.includes("Duplicate")) showFlash("⚠️ Duplicate phone number", "warning");
+            else showFlash("❌ Error adding lead", "danger");
+        }
+    });
+
+    function getStatusColor(status) {
+        if(status.includes('Won')) return '#198754';
+        if(status.includes('Lost')) return '#dc3545';
+        if(status.includes('Ready')) return '#0d6efd';
+        if(status === 'New Lead') return '#fd7e14';
+        return '#6c757d';
+    }
+
+    function showFlash(msg, type) {
+        const container = document.getElementById('flashContainer');
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert alert-${type} alert-dismissible fade show shadow-sm`;
+        alertDiv.style.fontSize = '0.85rem';
+        alertDiv.style.padding = '8px 12px';
+        alertDiv.innerHTML = `${msg} <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert"></button>`;
+        container.appendChild(alertDiv);
+        setTimeout(() => alertDiv.remove(), 3000);
+    }
+
+    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+
+    // Date Range Picker - Fixed Working Version
+    const datePickerInput = document.getElementById('dateRangePicker');
+    const calendarLabel = document.getElementById('calendarLabel');
+    const calendarTrigger = document.getElementById('calendarTrigger');
+    
+    // Initialize flatpickr on the hidden input
+    const fp = flatpickr(datePickerInput, {
+        mode: "range",
+        dateFormat: "Y-m-d",
+        altFormat: "d M, Y",
+        altInput: true,
+        locale: "hi",
+        position: "below",
+        onChange: function(selectedDates, dateStr, instance) {
+            if(selectedDates.length === 2) {
+                dateRangeStart = selectedDates[0];
+                dateRangeEnd = selectedDates[1];
+                calendarLabel.innerHTML = `${fp.formatDate(dateRangeStart, "d M")} - ${fp.formatDate(dateRangeEnd, "d M")}`;
+                renderLeadsAndStats();
+            } else if(selectedDates.length === 1) {
+                dateRangeStart = selectedDates[0];
+                dateRangeEnd = null;
+                calendarLabel.innerHTML = `${fp.formatDate(dateRangeStart, "d M")} onwards`;
+                renderLeadsAndStats();
+            } else {
+                dateRangeStart = null;
+                dateRangeEnd = null;
+                calendarLabel.innerHTML = "Date Range";
+                renderLeadsAndStats();
+            }
+        },
+        onOpen: function() {
+            // Ensure calendar displays properly
+        }
+    });
+    
+    // Open calendar when clicking the trigger button
+    calendarTrigger.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        fp.open();
+    });
+    
+    // Double click to clear
+    calendarTrigger.addEventListener('dblclick', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        fp.clear();
+        dateRangeStart = null;
+        dateRangeEnd = null;
+        calendarLabel.innerHTML = "Date Range";
+        renderLeadsAndStats();
+    });
+
+    document.getElementById('globalSearch').addEventListener('input', (e) => { searchTerm = e.target.value; renderLeadsAndStats(); });
+    document.getElementById('statusFilterGlobal').addEventListener('change', (e) => { statusFilter = e.target.value; renderLeadsAndStats(); });
+    
+    fetchLeads();
+
+    {% if leads %}
+    window.initialLeads = {{ leads | tojson | safe }};
+    setTimeout(() => {
+        if(leadsData.length === 0 && window.initialLeads) {
+            leadsData = window.initialLeads.sort((a,b)=> new Date(b.created_at) - new Date(a.created_at));
+            renderLeadsAndStats();
+        }
+    }, 100);
+    {% endif %}
+</script>
+</body>
+</html>
