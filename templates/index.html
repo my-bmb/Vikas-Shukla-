@@ -371,9 +371,27 @@
             }
         }
 
-        /* No loading spinner visible - background work only */
-        .bg-loading {
-            display: none;
+        /* Live indicator - small dot showing auto-refresh is active */
+        .live-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #10b981;
+            border-radius: 50%;
+            margin-left: 6px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 5px rgba(16, 185, 129, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+            }
         }
 
         @media (min-width: 768px) {
@@ -411,6 +429,7 @@
         <div>
             <span class="badge bg-white text-dark px-2 py-1 rounded-pill" style="font-size: 0.55rem;">
                 <i class="bi bi-cloud-check"></i> Live
+                <span class="live-indicator"></span>
             </span>
         </div>
     </div>
@@ -425,7 +444,10 @@
     </div>
 
     <div class="action-bar">
-        <h6 class="m-0 fw-bold" style="font-size: 0.75rem;"><i class="bi bi-people-fill me-1"></i> <span id="leadCountSpan">0</span> Leads</h6>
+        <h6 class="m-0 fw-bold" style="font-size: 0.75rem;">
+            <i class="bi bi-people-fill me-1"></i> <span id="leadCountSpan">0</span> Leads
+            <small class="text-muted" style="font-size: 0.55rem;">(auto-refresh 0.1s)</small>
+        </h6>
         <div class="d-flex gap-2">
             <a href="/export_excel" id="exportBtn" class="btn btn-outline-success btn-compact"><i class="bi bi-file-earmark-spreadsheet"></i> Export</a>
             <button class="btn btn-primary btn-compact d-none d-md-block" data-bs-toggle="modal" data-bs-target="#addLeadModal"><i class="bi bi-plus-lg"></i> Add</button>
@@ -455,7 +477,7 @@
     </div>
 
     <div id="leadsListContainer">
-        <!-- Leads will appear here, no loading spinner visible -->
+        <!-- Leads will appear here automatically -->
     </div>
 </div>
 
@@ -617,6 +639,7 @@
     let dateRangeStart = null;
     let dateRangeEnd = null;
     let isRefreshing = false;
+    let refreshInterval = null;
 
     function showToast(msg, type) {
         const container = document.getElementById('toastContainer');
@@ -634,8 +657,8 @@
         setTimeout(() => toast.remove(), 3000);
     }
 
-    // Silent background refresh - NO VISIBLE LOADING INDICATOR
-    async function refreshLeadsInBackground() {
+    // Ultra-fast auto refresh every 0.1 seconds (100ms)
+    async function autoRefresh() {
         if(isRefreshing) return;
         isRefreshing = true;
         
@@ -651,41 +674,36 @@
                     return dateB - dateA;
                 });
                 
-                // Check if data actually changed before re-rendering
+                // Check if data changed
                 const dataChanged = JSON.stringify(leadsData) !== JSON.stringify(newData);
                 if(dataChanged || leadsData.length === 0) {
                     leadsData = newData;
                     renderLeadsAndStats();
                 }
-            } else if(window.initialLeads && leadsData.length === 0) {
-                leadsData = window.initialLeads;
-                leadsData.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
-                renderLeadsAndStats();
             }
         } catch(e) { 
-            console.error("Background refresh error:", e);
+            // Silent fail - no error messages to user
+            console.error("Auto-refresh error:", e);
         } finally {
             isRefreshing = false;
         }
     }
 
-    // Force refresh after add/edit/delete operations
-    async function forceRefresh() {
-        try {
-            const timestamp = new Date().getTime();
-            const res = await fetch('/api/leads?t=' + timestamp);
-            if(res.ok) {
-                const newData = await res.json();
-                newData.sort((a, b) => {
-                    const dateA = new Date(a.created_at);
-                    const dateB = new Date(b.created_at);
-                    return dateB - dateA;
-                });
-                leadsData = newData;
-                renderLeadsAndStats();
-            }
-        } catch(e) {
-            console.error("Force refresh error:", e);
+    // Start auto-refresh every 0.1 seconds
+    function startAutoRefresh() {
+        if(refreshInterval) clearInterval(refreshInterval);
+        refreshInterval = setInterval(() => {
+            autoRefresh();
+        }, 100); // 100 milliseconds = 0.1 seconds
+        console.log("Auto-refresh started: every 0.1 seconds");
+    }
+
+    // Stop auto-refresh (if needed)
+    function stopAutoRefresh() {
+        if(refreshInterval) {
+            clearInterval(refreshInterval);
+            refreshInterval = null;
+            console.log("Auto-refresh stopped");
         }
     }
 
@@ -721,6 +739,11 @@
                     <p class="mt-2 text-muted small">No leads yet. Click + to add your first lead!</p>
                 </div>`;
             document.getElementById('leadCountSpan').innerText = "0";
+            document.getElementById('statsContainer').innerHTML = `
+                <div class="stat-card"><i class="bi bi-people-fill text-primary"></i><div class="stat-number">0</div><div class="stat-label">LEADS</div></div>
+                <div class="stat-card"><i class="bi bi-google text-danger"></i><div class="stat-number">0</div><div class="stat-label">ADSENSE</div></div>
+                <div class="stat-card"><i class="bi bi-building text-info"></i><div class="stat-number">0</div><div class="stat-label">JUSTDIAL</div></div>
+                <div class="stat-card"><i class="bi bi-whatsapp text-success"></i><div class="stat-number">0</div><div class="stat-label">WHATSAPP</div></div>`;
             return;
         }
         
@@ -813,7 +836,7 @@
                 const res = await fetch(`/delete_lead/${id}`);
                 if(res.ok) {
                     showToast('✓ Lead deleted successfully!', 'success');
-                    await forceRefresh();
+                    // Auto-refresh will pick up the change in 0.1 seconds
                 } else {
                     showToast('Failed to delete lead', 'error');
                 }
@@ -863,7 +886,7 @@
                 const res = await fetch(`/add_call_log/${id}`, { method: 'POST', body: formData });
                 if(res.ok) {
                     showToast(`✓ Call log added for ${name}`, 'success');
-                    await forceRefresh();
+                    // Auto-refresh will pick up the change
                 } else {
                     showToast('Failed to save log', 'error');
                 }
@@ -900,7 +923,7 @@
             if(res.ok) {
                 showToast('✓ Lead updated successfully!', 'success');
                 bootstrap.Modal.getInstance(document.getElementById('editModalGlobal')).hide();
-                await forceRefresh();
+                // Auto-refresh will pick up the change
             } else {
                 const text = await res.text();
                 if(text.includes("Duplicate")) showToast('⚠️ Duplicate phone number', 'error');
@@ -920,7 +943,7 @@
                 showToast('✓ Lead added successfully!', 'success');
                 bootstrap.Modal.getInstance(document.getElementById('addLeadModal')).hide();
                 e.target.reset();
-                await forceRefresh();
+                // Auto-refresh will pick up the new lead
             } else {
                 const text = await res.text();
                 if(text.includes("Duplicate")) {
@@ -991,13 +1014,21 @@
         renderLeadsAndStats(); 
     });
     
-    // Initial load - silent background
-    refreshLeadsInBackground();
+    // Start auto-refresh on page load
+    startAutoRefresh();
 
-    // Auto refresh every 10 seconds in background (optional)
-    setInterval(() => {
-        refreshLeadsInBackground();
-    }, 10000);
+    // Initial load
+    autoRefresh();
+
+    // Optional: Stop auto-refresh when page is hidden (saves resources)
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            stopAutoRefresh();
+        } else {
+            startAutoRefresh();
+            autoRefresh(); // Immediate refresh when page becomes visible
+        }
+    });
 
     {% if leads %}
     window.initialLeads = {{ leads | tojson | safe }};
