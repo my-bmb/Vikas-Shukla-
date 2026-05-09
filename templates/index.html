@@ -20,7 +20,6 @@
             padding-bottom: 70px;
         }
 
-        /* Compact Navbar */
         .navbar-modern {
             background: linear-gradient(135deg, #0b2b5c 0%, #1a4a8b 100%);
             padding: 0.5rem 0;
@@ -34,7 +33,6 @@
             margin-right: 6px;
         }
 
-        /* Ultra Compact Stats Cards */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -48,6 +46,12 @@
             padding: 6px 3px;
             text-align: center;
             box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .stat-card:active {
+            transform: scale(0.98);
         }
 
         .stat-card i {
@@ -70,7 +74,6 @@
             color: #0a2540;
         }
 
-        /* Compact Action Bar */
         .action-bar {
             display: flex;
             justify-content: space-between;
@@ -85,7 +88,6 @@
             font-size: 0.7rem;
         }
 
-        /* Ultra Compact Filter Row */
         .filter-row-horizontal {
             display: flex;
             gap: 6px;
@@ -132,7 +134,6 @@
             font-weight: 500;
         }
 
-        /* Compact Calendar Button */
         .calendar-trigger {
             background: white;
             border: 1px solid #e2e8f0;
@@ -156,7 +157,6 @@
             color: #0a2540;
         }
 
-        /* Ultra Compact Lead Cards */
         .lead-card {
             background: white;
             border-radius: 12px;
@@ -302,7 +302,6 @@
             transform: scale(0.96);
         }
 
-        /* Modal Styles */
         .modal-content {
             border-radius: 20px;
             margin: 10px;
@@ -328,7 +327,6 @@
             margin-bottom: 3px;
         }
 
-        /* FAB Button */
         .fab-add {
             position: fixed;
             bottom: 15px;
@@ -345,36 +343,14 @@
             border: none;
             color: white;
             font-size: 1.4rem;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
-        /* Loading Overlay */
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 9998;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .fab-add:active {
+            transform: scale(0.95);
         }
 
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid white;
-            border-top-color: #1a4a8b;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Toast Notifications */
         .toast-notification {
             position: fixed;
             top: 60px;
@@ -393,6 +369,11 @@
                 transform: translateY(0);
                 opacity: 1;
             }
+        }
+
+        /* No loading spinner visible - background work only */
+        .bg-loading {
+            display: none;
         }
 
         @media (min-width: 768px) {
@@ -436,19 +417,21 @@
 </nav>
 
 <div class="container mt-2">
-    <!-- Stats Cards -->
-    <div class="stats-grid" id="statsContainer"></div>
+    <div class="stats-grid" id="statsContainer">
+        <div class="stat-card"><i class="bi bi-people-fill text-primary"></i><div class="stat-number">0</div><div class="stat-label">LEADS</div></div>
+        <div class="stat-card"><i class="bi bi-google text-danger"></i><div class="stat-number">0</div><div class="stat-label">ADSENSE</div></div>
+        <div class="stat-card"><i class="bi bi-building text-info"></i><div class="stat-number">0</div><div class="stat-label">JUSTDIAL</div></div>
+        <div class="stat-card"><i class="bi bi-whatsapp text-success"></i><div class="stat-number">0</div><div class="stat-label">WHATSAPP</div></div>
+    </div>
 
-    <!-- Action Bar -->
     <div class="action-bar">
         <h6 class="m-0 fw-bold" style="font-size: 0.75rem;"><i class="bi bi-people-fill me-1"></i> <span id="leadCountSpan">0</span> Leads</h6>
         <div class="d-flex gap-2">
-            <a href="/export_excel" class="btn btn-outline-success btn-compact"><i class="bi bi-file-earmark-spreadsheet"></i> Export</a>
+            <a href="/export_excel" id="exportBtn" class="btn btn-outline-success btn-compact"><i class="bi bi-file-earmark-spreadsheet"></i> Export</a>
             <button class="btn btn-primary btn-compact d-none d-md-block" data-bs-toggle="modal" data-bs-target="#addLeadModal"><i class="bi bi-plus-lg"></i> Add</button>
         </div>
     </div>
 
-    <!-- Filter Row -->
     <div class="filter-row-horizontal">
         <div class="search-box-horizontal">
             <i class="bi bi-search"></i>
@@ -471,11 +454,11 @@
         </div>
     </div>
 
-    <!-- Leads List -->
-    <div id="leadsListContainer"></div>
+    <div id="leadsListContainer">
+        <!-- Leads will appear here, no loading spinner visible -->
+    </div>
 </div>
 
-<!-- FAB for mobile -->
 <button class="fab-add" data-bs-toggle="modal" data-bs-target="#addLeadModal">
     <i class="bi bi-plus-lg"></i>
 </button>
@@ -633,22 +616,7 @@
     let searchTerm = "";
     let dateRangeStart = null;
     let dateRangeEnd = null;
-    let isLoading = false;
-
-    function showLoading(show) {
-        if(show && !isLoading) {
-            isLoading = true;
-            const overlay = document.createElement('div');
-            overlay.id = 'loadingOverlay';
-            overlay.className = 'loading-overlay';
-            overlay.innerHTML = '<div class="spinner"></div>';
-            document.body.appendChild(overlay);
-        } else if(!show && isLoading) {
-            const overlay = document.getElementById('loadingOverlay');
-            if(overlay) overlay.remove();
-            isLoading = false;
-        }
-    }
+    let isRefreshing = false;
 
     function showToast(msg, type) {
         const container = document.getElementById('toastContainer');
@@ -666,17 +634,26 @@
         setTimeout(() => toast.remove(), 3000);
     }
 
-    async function fetchLeads(silent = false) {
-        if(!silent) showLoading(true);
+    // Silent background refresh - NO VISIBLE LOADING INDICATOR
+    async function refreshLeadsInBackground() {
+        if(isRefreshing) return;
+        isRefreshing = true;
+        
         try {
-            const res = await fetch('/api/leads?t=' + Date.now());
+            const timestamp = new Date().getTime();
+            const res = await fetch('/api/leads?t=' + timestamp);
+            
             if(res.ok) {
                 const newData = await res.json();
-                newData.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+                newData.sort((a, b) => {
+                    const dateA = new Date(a.created_at);
+                    const dateB = new Date(b.created_at);
+                    return dateB - dateA;
+                });
                 
-                // Check if data changed
+                // Check if data actually changed before re-rendering
                 const dataChanged = JSON.stringify(leadsData) !== JSON.stringify(newData);
-                if(dataChanged) {
+                if(dataChanged || leadsData.length === 0) {
                     leadsData = newData;
                     renderLeadsAndStats();
                 }
@@ -686,9 +663,29 @@
                 renderLeadsAndStats();
             }
         } catch(e) { 
-            console.warn(e); 
+            console.error("Background refresh error:", e);
         } finally {
-            if(!silent) showLoading(false);
+            isRefreshing = false;
+        }
+    }
+
+    // Force refresh after add/edit/delete operations
+    async function forceRefresh() {
+        try {
+            const timestamp = new Date().getTime();
+            const res = await fetch('/api/leads?t=' + timestamp);
+            if(res.ok) {
+                const newData = await res.json();
+                newData.sort((a, b) => {
+                    const dateA = new Date(a.created_at);
+                    const dateB = new Date(b.created_at);
+                    return dateB - dateA;
+                });
+                leadsData = newData;
+                renderLeadsAndStats();
+            }
+        } catch(e) {
+            console.error("Force refresh error:", e);
         }
     }
 
@@ -696,16 +693,43 @@
         if(!dateRangeStart && !dateRangeEnd) return true;
         if(!lead.created_at) return false;
         const leadDate = new Date(lead.created_at);
-        if(dateRangeStart && dateRangeEnd) return leadDate >= dateRangeStart && leadDate <= dateRangeEnd;
-        if(dateRangeStart) return leadDate >= dateRangeStart;
-        if(dateRangeEnd) return leadDate <= dateRangeEnd;
+        leadDate.setHours(0, 0, 0, 0);
+        
+        if(dateRangeStart && dateRangeEnd) {
+            const start = new Date(dateRangeStart);
+            start.setHours(0, 0, 0, 0);
+            const end = new Date(dateRangeEnd);
+            end.setHours(23, 59, 59, 999);
+            return leadDate >= start && leadDate <= end;
+        } else if(dateRangeStart) {
+            const start = new Date(dateRangeStart);
+            start.setHours(0, 0, 0, 0);
+            return leadDate >= start;
+        } else if(dateRangeEnd) {
+            const end = new Date(dateRangeEnd);
+            end.setHours(23, 59, 59, 999);
+            return leadDate <= end;
+        }
         return true;
     }
 
     function renderLeadsAndStats() {
+        if(!leadsData || leadsData.length === 0) {
+            document.getElementById('leadsListContainer').innerHTML = `
+                <div class="text-center p-4 bg-white rounded-3">
+                    <i class="bi bi-inbox fs-3 text-muted"></i>
+                    <p class="mt-2 text-muted small">No leads yet. Click + to add your first lead!</p>
+                </div>`;
+            document.getElementById('leadCountSpan').innerText = "0";
+            return;
+        }
+        
         let filtered = leadsData.filter(lead => {
             if(statusFilter !== "all" && lead.status !== statusFilter) return false;
-            if(searchTerm && !(lead.name + " " + lead.phone + " " + (lead.from_location||"") + " " + (lead.to_location||"")).toLowerCase().includes(searchTerm.toLowerCase())) return false;
+            if(searchTerm !== "") {
+                const haystack = (lead.name + " " + lead.phone + " " + (lead.from_location||"") + " " + (lead.to_location||"")).toLowerCase();
+                if(!haystack.includes(searchTerm.toLowerCase())) return false;
+            }
             if(!filterByDateRange(lead)) return false;
             return true;
         });
@@ -724,7 +748,7 @@
 
         const container = document.getElementById('leadsListContainer');
         if(filtered.length === 0) {
-            container.innerHTML = `<div class="text-center p-4 bg-white rounded-3"><i class="bi bi-inbox fs-3 text-muted"></i><p class="mt-2 text-muted small">No leads</p></div>`;
+            container.innerHTML = `<div class="text-center p-4 bg-white rounded-3"><i class="bi bi-inbox fs-3 text-muted"></i><p class="mt-2 text-muted small">No leads match filters</p></div>`;
             return;
         }
         
@@ -745,7 +769,7 @@
                     <a href="https://wa.me/91${lead.phone}" target="_blank" class="phone-link whatsapp-link"><i class="bi bi-whatsapp"></i> Chat</a>
                 </div>
                 <div class="location-row">
-                    <i class="bi bi-geo-alt-fill"></i> ${lead.from_location || '—'} → ${lead.to_location || '—'}
+                    <i class="bi bi-geo-alt-fill"></i> ${escapeHtml(lead.from_location) || '—'} → ${escapeHtml(lead.to_location) || '—'}
                 </div>
                 <div class="d-flex justify-content-between align-items-center gap-1 mt-1">
                     <div class="cost-badge">₹${Number(lead.cost_estimate || 0).toLocaleString()}</div>
@@ -754,7 +778,7 @@
                 <div class="action-icons">
                     <button class="action-icon edit-lead-btn" data-id="${lead.id}" data-name="${escapeHtml(lead.name)}" data-phone="${lead.phone}" data-alt="${lead.alternate_phone || ''}" data-source="${lead.source || 'Google Adsense'}" data-status="${lead.status || 'New Lead'}" data-from="${lead.from_location || ''}" data-to="${lead.to_location || ''}" data-cost="${lead.cost_estimate || 0}" data-final="${lead.final_cost || 0}" data-advance="${lead.advance_paid || 0}" data-payment="${lead.payment_status || 'Pending'}" data-shifting="${lead.shifting_date || ''}" data-followup="${lead.followup_date || ''}" data-notes="${escapeHtml(lead.notes || '')}"><i class="bi bi-pencil-square"></i> Edit</button>
                     <button class="action-icon call-logger" data-id="${lead.id}" data-name="${escapeHtml(lead.name)}"><i class="bi bi-chat-text"></i> Log</button>
-                    <a href="#" class="action-icon text-danger delete-lead-btn" data-id="${lead.id}"><i class="bi bi-trash3"></i> Del</a>
+                    <button class="action-icon text-danger delete-lead-btn" data-id="${lead.id}"><i class="bi bi-trash3"></i> Del</button>
                 </div>
             </div>
         `}).join('');
@@ -763,19 +787,16 @@
     }
 
     function attachEventListeners() {
-        // Edit buttons
         document.querySelectorAll('.edit-lead-btn').forEach(btn => {
             btn.removeEventListener('click', handleEditClick);
             btn.addEventListener('click', handleEditClick);
         });
         
-        // Call log buttons
         document.querySelectorAll('.call-logger').forEach(btn => {
             btn.removeEventListener('click', handleCallClick);
             btn.addEventListener('click', handleCallClick);
         });
         
-        // Delete buttons (AJAX delete without page refresh)
         document.querySelectorAll('.delete-lead-btn').forEach(btn => {
             btn.removeEventListener('click', handleDeleteClick);
             btn.addEventListener('click', handleDeleteClick);
@@ -788,19 +809,16 @@
         const id = e.currentTarget.dataset.id;
         
         if(confirm('Delete this lead permanently?')) {
-            showLoading(true);
             try {
                 const res = await fetch(`/delete_lead/${id}`);
                 if(res.ok) {
                     showToast('✓ Lead deleted successfully!', 'success');
-                    await fetchLeads(true);
+                    await forceRefresh();
                 } else {
                     showToast('Failed to delete lead', 'error');
                 }
             } catch(err) {
                 showToast('Error deleting lead', 'error');
-            } finally {
-                showLoading(false);
             }
         }
     }
@@ -833,23 +851,25 @@
         openEditModal(lead);
     }
     
-    function handleCallClick(e) {
+    async function handleCallClick(e) {
         e.stopPropagation();
         const id = e.currentTarget.dataset.id;
         const name = e.currentTarget.dataset.name;
         const note = prompt(`Add notes for ${name}:`, "Discussed shifting details");
-        if(note?.trim()) {
-            showLoading(true);
+        if(note && note.trim()) {
             const formData = new URLSearchParams();
             formData.append('call_note', note);
-            fetch(`/add_call_log/${id}`, { method: 'POST', body: formData })
-                .then(async res => {
-                    if(res.ok) {
-                        showToast(`✓ Call log added for ${name}`, 'success');
-                        await fetchLeads(true);
-                    } else showToast('Failed to save log', 'error');
-                })
-                .finally(() => showLoading(false));
+            try {
+                const res = await fetch(`/add_call_log/${id}`, { method: 'POST', body: formData });
+                if(res.ok) {
+                    showToast(`✓ Call log added for ${name}`, 'success');
+                    await forceRefresh();
+                } else {
+                    showToast('Failed to save log', 'error');
+                }
+            } catch(err) {
+                showToast('Error adding call log', 'error');
+            }
         }
     }
 
@@ -874,27 +894,25 @@
 
     document.getElementById('editFormDynamic').addEventListener('submit', async (e) => {
         e.preventDefault();
-        showLoading(true);
         const formData = new FormData(e.target);
         try {
             const res = await fetch(`/edit_lead/${formData.get('lead_id')}`, { method: 'POST', body: formData });
             if(res.ok) {
                 showToast('✓ Lead updated successfully!', 'success');
                 bootstrap.Modal.getInstance(document.getElementById('editModalGlobal')).hide();
-                await fetchLeads(true);
+                await forceRefresh();
             } else {
-                showToast('Update failed', 'error');
+                const text = await res.text();
+                if(text.includes("Duplicate")) showToast('⚠️ Duplicate phone number', 'error');
+                else showToast('Update failed', 'error');
             }
         } catch(err) {
             showToast('Error updating lead', 'error');
-        } finally {
-            showLoading(false);
         }
     });
 
     document.getElementById('addLeadForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-        showLoading(true);
         const formData = new FormData(e.target);
         try {
             const res = await fetch('/add_lead', { method: 'POST', body: formData });
@@ -902,16 +920,17 @@
                 showToast('✓ Lead added successfully!', 'success');
                 bootstrap.Modal.getInstance(document.getElementById('addLeadModal')).hide();
                 e.target.reset();
-                await fetchLeads(true);
+                await forceRefresh();
             } else {
                 const text = await res.text();
-                if(text.includes("Duplicate")) showToast('⚠️ Duplicate phone number', 'error');
-                else showToast('Failed to add lead', 'error');
+                if(text.includes("Duplicate")) {
+                    showToast('⚠️ Duplicate phone number!', 'error');
+                } else {
+                    showToast('Failed to add lead', 'error');
+                }
             }
         } catch(err) {
             showToast('Error adding lead', 'error');
-        } finally {
-            showLoading(false);
         }
     });
 
@@ -962,11 +981,23 @@
         renderLeadsAndStats();
     });
 
-    document.getElementById('globalSearch').addEventListener('input', (e) => { searchTerm = e.target.value; renderLeadsAndStats(); });
-    document.getElementById('statusFilterGlobal').addEventListener('change', (e) => { statusFilter = e.target.value; renderLeadsAndStats(); });
+    document.getElementById('globalSearch').addEventListener('input', (e) => { 
+        searchTerm = e.target.value; 
+        renderLeadsAndStats(); 
+    });
     
-    // Initial fetch
-    fetchLeads();
+    document.getElementById('statusFilterGlobal').addEventListener('change', (e) => { 
+        statusFilter = e.target.value; 
+        renderLeadsAndStats(); 
+    });
+    
+    // Initial load - silent background
+    refreshLeadsInBackground();
+
+    // Auto refresh every 10 seconds in background (optional)
+    setInterval(() => {
+        refreshLeadsInBackground();
+    }, 10000);
 
     {% if leads %}
     window.initialLeads = {{ leads | tojson | safe }};
