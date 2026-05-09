@@ -80,7 +80,7 @@
             border-radius: 40px;
             padding: 5px 14px;
             font-weight: 500;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
         }
 
         /* Horizontal Filter Row */
@@ -130,10 +130,9 @@
             font-weight: 500;
         }
 
-        /* Calendar Button - Fixed */
+        /* Calendar Button */
         .calendar-btn-wrapper {
             position: relative;
-            display: inline-block;
         }
 
         .calendar-trigger {
@@ -164,17 +163,8 @@
             font-weight: 500;
             color: #2c3e50;
         }
-        
-        /* Hidden date input for flatpickr */
-        .hidden-date-input {
-            position: absolute;
-            opacity: 0;
-            pointer-events: none;
-            width: 0;
-            height: 0;
-        }
 
-        /* Lead Cards - Compact */
+        /* Lead Cards - Compact with less spacing */
         .lead-card {
             background: white;
             border-radius: 16px;
@@ -182,6 +172,7 @@
             padding: 10px 12px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.04);
             border: 1px solid #eef2f6;
+            transition: all 0.15s;
         }
 
         .lead-card:hover {
@@ -399,10 +390,9 @@
             z-index: 1090;
         }
         
-        /* Flatpickr calendar high z-index */
+        /* Flatpickr custom styles */
         .flatpickr-calendar {
-            z-index: 99999 !important;
-            position: absolute !important;
+            z-index: 9999 !important;
         }
     </style>
 </head>
@@ -433,8 +423,8 @@
     <div class="action-bar">
         <h6 class="m-0 fw-bold" style="font-size: 0.9rem;"><i class="bi bi-people-fill"></i> <span id="leadCountSpan">0</span> Leads</h6>
         <div class="d-flex gap-2">
-            <a href="/export_excel" class="btn btn-outline-success btn-circle btn-sm"><i class="bi bi-file-earmark-spreadsheet"></i> <span class="d-none d-sm-inline">Export</span></a>
-            <button class="btn btn-primary btn-circle btn-sm d-none d-md-inline-flex" data-bs-toggle="modal" data-bs-target="#addLeadModal"><i class="bi bi-plus-lg"></i> Add Lead</button>
+            <a href="/export_excel" class="btn btn-outline-success btn-circle btn-sm" style="font-size: 0.75rem;"><i class="bi bi-file-earmark-spreadsheet"></i> <span class="d-none d-sm-inline">Export</span></a>
+            <button class="btn btn-primary btn-circle btn-sm d-none d-md-inline-flex" style="font-size: 0.75rem;" data-bs-toggle="modal" data-bs-target="#addLeadModal"><i class="bi bi-plus-lg"></i> Add Lead</button>
         </div>
     </div>
 
@@ -455,7 +445,6 @@
         </div>
         
         <div class="calendar-btn-wrapper">
-            <input type="text" id="dateRangePicker" class="hidden-date-input">
             <div class="calendar-trigger" id="calendarTrigger">
                 <i class="bi bi-calendar-range"></i>
                 <span id="calendarLabel">Date Range</span>
@@ -543,7 +532,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://npmcdn.com/flatpickr/dist/l10n/hi.js"></script>
 <script>
     let leadsData = [];
     let statusFilter = "all";
@@ -559,6 +547,8 @@
                 leadsData.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
                 renderLeadsAndStats();
             } else {
+                console.warn("API fallback");
+                // Use initial data if available
                 if(window.initialLeads) {
                     leadsData = window.initialLeads;
                     leadsData.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
@@ -623,6 +613,7 @@
         }
         
         container.innerHTML = filtered.map(lead => {
+            const createdDate = lead.created_at ? new Date(lead.created_at).toLocaleDateString('hi-IN') : 'N/A';
             const daysOld = lead.created_at ? Math.floor((new Date() - new Date(lead.created_at)) / (1000*60*60*24)) : '?';
             return `
             <div class="lead-card" data-lead-id="${lead.id}">
@@ -767,18 +758,14 @@
 
     function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
 
-    // Date Range Picker - Fixed Working Version
-    const datePickerInput = document.getElementById('dateRangePicker');
-    const calendarLabel = document.getElementById('calendarLabel');
+    // Initialize Calendar Picker
     const calendarTrigger = document.getElementById('calendarTrigger');
+    const calendarLabel = document.getElementById('calendarLabel');
     
-    // Initialize flatpickr on the hidden input
-    const fp = flatpickr(datePickerInput, {
+    // Create flatpickr instance on the trigger element
+    const fp = flatpickr(calendarTrigger, {
         mode: "range",
-        dateFormat: "Y-m-d",
-        altFormat: "d M, Y",
-        altInput: true,
-        locale: "hi",
+        dateFormat: "d M, Y",
         position: "below",
         onChange: function(selectedDates, dateStr, instance) {
             if(selectedDates.length === 2) {
@@ -798,21 +785,20 @@
                 renderLeadsAndStats();
             }
         },
-        onOpen: function() {
-            // Ensure calendar displays properly
+        onReady: function(selectedDates, dateStr, instance) {
+            // Make sure calendar opens on click
+            calendarTrigger.style.cursor = 'pointer';
         }
     });
     
-    // Open calendar when clicking the trigger button
-    calendarTrigger.addEventListener('click', function(e) {
-        e.preventDefault();
+    // Ensure calendar opens when clicking the trigger
+    calendarTrigger.addEventListener('click', (e) => {
         e.stopPropagation();
         fp.open();
     });
     
-    // Double click to clear
-    calendarTrigger.addEventListener('dblclick', function(e) {
-        e.preventDefault();
+    // Clear calendar on double click
+    calendarTrigger.addEventListener('dblclick', (e) => {
         e.stopPropagation();
         fp.clear();
         dateRangeStart = null;
