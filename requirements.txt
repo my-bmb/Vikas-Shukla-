@@ -1,6 +1,6 @@
 Flask
 flask-sqlalchemy
-supabase-python
+supabase
 python-dotenv
 pandas
 openpyxl
