@@ -157,6 +157,7 @@
             color: #0a2540;
         }
 
+        /* Ultra Compact Lead Cards - Minimal Height */
         .lead-card {
             background: white;
             border-radius: 12px;
@@ -165,21 +166,11 @@
             box-shadow: 0 1px 2px rgba(0,0,0,0.03);
             border: 1px solid #edf2f7;
             transition: all 0.2s ease;
+            cursor: pointer;
         }
 
-        .lead-card-new {
-            animation: fadeInUp 0.3s ease-out;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .lead-card:active {
+            transform: scale(0.98);
         }
 
         .lead-header {
@@ -270,85 +261,159 @@
             font-weight: 600;
         }
 
-        .action-icons {
-            display: flex;
-            gap: 4px;
-            margin-top: 6px;
-            padding-top: 6px;
-            border-top: 1px solid #edf2f7;
-            justify-content: flex-end;
-        }
-
-        .action-icon {
-            background: none;
-            border: none;
-            font-size: 0.7rem;
-            color: #64748b;
-            display: inline-flex;
-            align-items: center;
-            gap: 3px;
-            font-weight: 600;
-            padding: 4px 10px;
-            border-radius: 25px;
-            min-height: 32px;
-        }
-
-        .action-icon i {
-            font-size: 0.8rem;
-        }
-
-        .action-icon:active {
-            background: #e2e8f0;
-            transform: scale(0.96);
-        }
-
-        .modal-content {
-            border-radius: 20px;
-            margin: 10px;
-        }
-
-        .modal-header {
-            padding: 12px 16px;
-        }
-
-        .modal-body {
-            padding: 16px;
-            max-height: 70vh;
-            overflow-y: auto;
-        }
-
-        .form-control-sm, .form-select-sm {
-            font-size: 0.8rem;
-            padding: 6px 10px;
-        }
-
-        .form-label {
-            font-size: 0.7rem;
-            margin-bottom: 3px;
-        }
-
-        .fab-add {
-            position: fixed;
-            bottom: 15px;
-            right: 15px;
+        /* Expand Button - Bada aur visible */
+        .expand-btn {
             background: linear-gradient(135deg, #0b2b5c 0%, #1a4a8b 100%);
-            width: 48px;
-            height: 48px;
-            border-radius: 24px;
+            border: none;
+            border-radius: 25px;
+            padding: 6px 12px;
+            margin-top: 6px;
+            width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-            z-index: 1050;
-            border: none;
+            gap: 8px;
+            font-size: 0.7rem;
+            font-weight: 600;
             color: white;
-            font-size: 1.4rem;
             cursor: pointer;
             transition: all 0.2s;
         }
 
-        .fab-add:active {
-            transform: scale(0.95);
+        .expand-btn i {
+            font-size: 0.8rem;
+        }
+
+        .expand-btn:active {
+            transform: scale(0.97);
+        }
+
+        /* Detailed Modal Styles */
+        .detailed-modal .modal-content {
+            border-radius: 28px;
+            overflow: hidden;
+        }
+
+        .detailed-modal .modal-header {
+            background: linear-gradient(135deg, #0b2b5c 0%, #1a4a8b 100%);
+            color: white;
+            padding: 20px 24px;
+            border: none;
+        }
+
+        .detailed-modal .modal-body {
+            padding: 24px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .detail-section {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        .detail-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #64748b;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0a2540;
+        }
+
+        .detail-value-large {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #0b2b5c;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .modal-action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .modal-action-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .modal-action-btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-edit-modal {
+            background: #0b2b5c;
+            color: white;
+        }
+
+        .btn-call-modal {
+            background: #25D366;
+            color: white;
+        }
+
+        .btn-whatsapp-modal {
+            background: #128C7E;
+            color: white;
+        }
+
+        .btn-delete-modal {
+            background: #dc3545;
+            color: white;
+        }
+
+        /* Call Logs inside modal */
+        .call-logs-container {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .call-log-item-modal {
+            background: white;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 12px;
+            border-left: 3px solid #1a4a8b;
+        }
+
+        .call-log-time-modal {
+            font-size: 0.65rem;
+            color: #64748b;
+            margin-bottom: 4px;
+        }
+
+        .call-log-note-modal {
+            font-size: 0.8rem;
+            color: #0a2540;
+        }
+
+        .new-call-input {
+            margin-top: 12px;
         }
 
         .toast-notification {
@@ -371,57 +436,35 @@
             }
         }
 
-        .auto-refresh-badge {
-            display: inline-block;
-            background: rgba(16, 185, 129, 0.2);
-            color: #10b981;
-            font-size: 0.55rem;
-            padding: 2px 6px;
-            border-radius: 20px;
-            margin-left: 8px;
-        }
-
-        /* Call log modal styles */
-        .call-log-list {
-            max-height: 300px;
-            overflow-y: auto;
-            background: #f8fafc;
-            border-radius: 12px;
-            padding: 10px;
-        }
-
-        .call-log-item {
-            background: white;
-            padding: 8px 12px;
-            margin-bottom: 8px;
-            border-radius: 10px;
-            border-left: 3px solid #1a4a8b;
-            font-size: 0.75rem;
-        }
-
-        .call-log-time {
-            font-size: 0.6rem;
-            color: #64748b;
-            margin-bottom: 4px;
-        }
-
-        .call-log-note {
-            color: #0a2540;
+        .fab-add {
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #0b2b5c 0%, #1a4a8b 100%);
+            width: 48px;
+            height: 48px;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            z-index: 1050;
+            border: none;
+            color: white;
+            font-size: 1.4rem;
+            cursor: pointer;
         }
 
         @media (min-width: 768px) {
             .fab-add {
                 display: none;
             }
-            
             .stats-grid {
                 gap: 12px;
             }
-            
             .stat-card {
                 padding: 10px;
             }
-            
             .stat-number {
                 font-size: 1.4rem;
             }
@@ -444,7 +487,6 @@
         <div>
             <span class="badge bg-white text-dark px-2 py-1 rounded-pill" style="font-size: 0.55rem;">
                 <i class="bi bi-cloud-check"></i> Live
-                <span class="auto-refresh-badge">auto-refresh ON</span>
             </span>
         </div>
     </div>
@@ -463,7 +505,7 @@
             <i class="bi bi-people-fill me-1"></i> <span id="leadCountSpan">0</span> Leads
         </h6>
         <div class="d-flex gap-2">
-            <a href="/export_excel" id="exportBtn" class="btn btn-outline-success btn-compact"><i class="bi bi-file-earmark-spreadsheet"></i> Export</a>
+            <a href="/export_excel" class="btn btn-outline-success btn-compact"><i class="bi bi-file-earmark-spreadsheet"></i> Export</a>
             <button class="btn btn-primary btn-compact d-none d-md-block" data-bs-toggle="modal" data-bs-target="#addLeadModal"><i class="bi bi-plus-lg"></i> Add</button>
         </div>
     </div>
@@ -508,50 +550,15 @@
             <form id="addLeadForm">
                 <div class="modal-body">
                     <div class="row g-2">
-                        <div class="col-12">
-                            <label class="form-label">Name *</label>
-                            <input type="text" name="name" class="form-control form-control-sm" required>
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label">Phone *</label>
-                            <input type="tel" name="phone" class="form-control form-control-sm" required>
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label">Source</label>
-                            <select name="source" class="form-select form-select-sm">
-                                {% for src in sources %}
-                                <option>{{ src }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label">Status</label>
-                            <select name="status" class="form-select form-select-sm">
-                                {% for st in statuses %}
-                                <option>{{ st }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="col-6">
-                            <label class="form-label">From</label>
-                            <input type="text" name="from_location" class="form-control form-control-sm" placeholder="City">
-                        </div>
-                        <div class="col-6">
-                            <label class="form-label">To</label>
-                            <input type="text" name="to_location" class="form-control form-control-sm" placeholder="City">
-                        </div>
-                        <div class="col-6">
-                            <label class="form-label">Estimate (₹)</label>
-                            <input type="number" name="cost_estimate" class="form-control form-control-sm" value="0">
-                        </div>
-                        <div class="col-6">
-                            <label class="form-label">Shifting Date</label>
-                            <input type="date" name="shifting_date" class="form-control form-control-sm">
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label">Notes</label>
-                            <textarea name="notes" class="form-control form-control-sm" rows="2"></textarea>
-                        </div>
+                        <div class="col-12"><label class="form-label">Name *</label><input type="text" name="name" class="form-control form-control-sm" required></div>
+                        <div class="col-12"><label class="form-label">Phone *</label><input type="tel" name="phone" class="form-control form-control-sm" required></div>
+                        <div class="col-12"><label class="form-label">Source</label><select name="source" class="form-select form-select-sm">{% for src in sources %}<option>{{ src }}</option>{% endfor %}</select></div>
+                        <div class="col-12"><label class="form-label">Status</label><select name="status" class="form-select form-select-sm">{% for st in statuses %}<option>{{ st }}</option>{% endfor %}</select></div>
+                        <div class="col-6"><label class="form-label">From</label><input type="text" name="from_location" class="form-control form-control-sm"></div>
+                        <div class="col-6"><label class="form-label">To</label><input type="text" name="to_location" class="form-control form-control-sm"></div>
+                        <div class="col-6"><label class="form-label">Estimate (₹)</label><input type="number" name="cost_estimate" class="form-control form-control-sm" value="0"></div>
+                        <div class="col-6"><label class="form-label">Shifting Date</label><input type="date" name="shifting_date" class="form-control form-control-sm"></div>
+                        <div class="col-12"><label class="form-label">Notes</label><textarea name="notes" class="form-control form-control-sm" rows="2"></textarea></div>
                     </div>
                 </div>
                 <div class="modal-footer py-2">
@@ -563,7 +570,7 @@
     </div>
 </div>
 
-<!-- Edit Modal -->
+<!-- Edit Modal (Keep for compatibility) -->
 <div class="modal fade" id="editModalGlobal" tabindex="-1">
     <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
@@ -575,62 +582,18 @@
                 <input type="hidden" name="lead_id" id="edit_lead_id">
                 <div class="modal-body">
                     <div class="row g-2">
-                        <div class="col-12">
-                            <label class="form-label">Name *</label>
-                            <input type="text" name="name" id="edit_name" class="form-control form-control-sm" required>
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label">Phone *</label>
-                            <input type="tel" name="phone" id="edit_phone" class="form-control form-control-sm" required>
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label">Alt Phone</label>
-                            <input type="tel" name="alternate_phone" id="edit_alt_phone" class="form-control form-control-sm">
-                        </div>
-                        <div class="col-6">
-                            <label class="form-label">Source</label>
-                            <select name="source" id="edit_source" class="form-select form-select-sm">
-                                {% for src in sources %}
-                                <option>{{ src }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="col-6">
-                            <label class="form-label">Status</label>
-                            <select name="status" id="edit_status" class="form-select form-select-sm">
-                                {% for st in statuses %}
-                                <option>{{ st }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="col-6">
-                            <label class="form-label">Estimate (₹)</label>
-                            <input type="number" name="cost_estimate" id="edit_cost" class="form-control form-control-sm">
-                        </div>
-                        <div class="col-6">
-                            <label class="form-label">Final Cost</label>
-                            <input type="number" name="final_cost" id="edit_final" class="form-control form-control-sm">
-                        </div>
-                        <div class="col-6">
-                            <label class="form-label">From</label>
-                            <input type="text" name="from_location" id="edit_from" class="form-control form-control-sm">
-                        </div>
-                        <div class="col-6">
-                            <label class="form-label">To</label>
-                            <input type="text" name="to_location" id="edit_to" class="form-control form-control-sm">
-                        </div>
-                        <div class="col-6">
-                            <label class="form-label">Shifting Date</label>
-                            <input type="date" name="shifting_date" id="edit_shifting_date" class="form-control form-control-sm">
-                        </div>
-                        <div class="col-6">
-                            <label class="form-label">Follow-up</label>
-                            <input type="date" name="followup_date" id="edit_followup" class="form-control form-control-sm">
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label">Notes</label>
-                            <textarea name="notes" id="edit_notes" class="form-control form-control-sm" rows="2"></textarea>
-                        </div>
+                        <div class="col-12"><label class="form-label">Name *</label><input type="text" name="name" id="edit_name" class="form-control form-control-sm" required></div>
+                        <div class="col-12"><label class="form-label">Phone *</label><input type="tel" name="phone" id="edit_phone" class="form-control form-control-sm" required></div>
+                        <div class="col-12"><label class="form-label">Alt Phone</label><input type="tel" name="alternate_phone" id="edit_alt_phone" class="form-control form-control-sm"></div>
+                        <div class="col-6"><label class="form-label">Source</label><select name="source" id="edit_source" class="form-select form-select-sm">{% for src in sources %}<option>{{ src }}</option>{% endfor %}</select></div>
+                        <div class="col-6"><label class="form-label">Status</label><select name="status" id="edit_status" class="form-select form-select-sm">{% for st in statuses %}<option>{{ st }}</option>{% endfor %}</select></div>
+                        <div class="col-6"><label class="form-label">Estimate (₹)</label><input type="number" name="cost_estimate" id="edit_cost" class="form-control form-control-sm"></div>
+                        <div class="col-6"><label class="form-label">Final Cost</label><input type="number" name="final_cost" id="edit_final" class="form-control form-control-sm"></div>
+                        <div class="col-6"><label class="form-label">From</label><input type="text" name="from_location" id="edit_from" class="form-control form-control-sm"></div>
+                        <div class="col-6"><label class="form-label">To</label><input type="text" name="to_location" id="edit_to" class="form-control form-control-sm"></div>
+                        <div class="col-6"><label class="form-label">Shifting Date</label><input type="date" name="shifting_date" id="edit_shifting_date" class="form-control form-control-sm"></div>
+                        <div class="col-6"><label class="form-label">Follow-up</label><input type="date" name="followup_date" id="edit_followup" class="form-control form-control-sm"></div>
+                        <div class="col-12"><label class="form-label">Notes</label><textarea name="notes" id="edit_notes" class="form-control form-control-sm" rows="2"></textarea></div>
                     </div>
                 </div>
                 <div class="modal-footer py-2">
@@ -642,25 +605,21 @@
     </div>
 </div>
 
-<!-- Call Log Modal -->
-<div class="modal fade" id="callLogModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-scrollable">
+<!-- Detailed View Modal -->
+<div class="modal fade detailed-modal" id="detailModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h6 class="modal-title m-0"><i class="bi bi-chat-text me-2"></i> Call Logs - <span id="callLogLeadName"></span></h6>
+                <div>
+                    <h5 class="modal-title" id="detailModalTitle">Lead Details</h5>
+                    <small id="detailModalSubtitle" class="opacity-75">Complete customer information</small>
+                </div>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <div id="callLogList" class="call-log-list">
-                    <!-- Call logs will appear here -->
+                <div id="detailContent">
+                    <!-- Dynamic content will be loaded here -->
                 </div>
-                <hr>
-                <label class="form-label">Add New Call Note</label>
-                <textarea id="newCallNote" class="form-control form-control-sm" rows="2" placeholder="Enter call notes..."></textarea>
-            </div>
-            <div class="modal-footer py-2">
-                <button type="button" class="btn btn-sm btn-light" data-bs-dismiss="modal">Close</button>
-                <button type="button" id="saveCallLogBtn" class="btn btn-sm btn-primary px-3">Save Call Log</button>
             </div>
         </div>
     </div>
@@ -674,8 +633,6 @@
     let searchTerm = "";
     let dateRangeStart = null;
     let dateRangeEnd = null;
-    let currentCallLogLeadId = null;
-    let currentCallLogLeadName = null;
 
     function showToast(msg, type) {
         const container = document.getElementById('toastContainer');
@@ -697,7 +654,6 @@
         window.location.reload();
     }
 
-    // Fetch call logs for a specific lead
     async function fetchCallLogs(leadId) {
         try {
             const res = await fetch(`/api/lead/${leadId}/call_logs?t=${Date.now()}`);
@@ -711,138 +667,227 @@
         return [];
     }
 
-    // Display call logs in modal
-    async function displayCallLogs(leadId, leadName) {
-        currentCallLogLeadId = leadId;
-        currentCallLogLeadName = leadName;
-        document.getElementById('callLogLeadName').innerText = leadName;
-        document.getElementById('newCallNote').value = '';
+    async function addCallLog(leadId, note) {
+        const formData = new URLSearchParams();
+        formData.append('call_note', note);
         
+        const res = await fetch(`/add_call_log/${leadId}`, { 
+            method: 'POST', 
+            body: formData,
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        });
+        
+        return res.ok;
+    }
+
+    function openDetailModal(lead) {
+        const modal = new bootstrap.Modal(document.getElementById('detailModal'));
+        document.getElementById('detailModalTitle').innerHTML = `<i class="bi bi-person-circle me-2"></i>${escapeHtml(lead.name)}`;
+        
+        const daysOld = lead.created_at ? Math.floor((new Date() - new Date(lead.created_at)) / (1000*60*60*24)) : 0;
+        
+        document.getElementById('detailContent').innerHTML = `
+            <div class="info-grid">
+                <div class="detail-section">
+                    <div class="detail-label"><i class="bi bi-telephone-fill"></i> Phone Numbers</div>
+                    <div class="detail-value">
+                        <a href="tel:${lead.phone}" class="btn btn-sm btn-outline-primary mt-1">📞 ${lead.phone}</a>
+                        ${lead.alternate_phone ? `<a href="tel:${lead.alternate_phone}" class="btn btn-sm btn-outline-secondary mt-1 ms-2">📱 ${lead.alternate_phone}</a>` : ''}
+                    </div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label"><i class="bi bi-geo-alt-fill"></i> Location</div>
+                    <div class="detail-value-large">${escapeHtml(lead.from_location) || '—'} <i class="bi bi-arrow-right"></i> ${escapeHtml(lead.to_location) || '—'}</div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label"><i class="bi bi-tag-fill"></i> Source</div>
+                    <div class="detail-value"><span class="badge bg-secondary">${escapeHtml(lead.source)}</span></div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label"><i class="bi bi-bar-chart-fill"></i> Status</div>
+                    <div class="detail-value"><span class="badge" style="background:${getStatusColor(lead.status)}">${lead.status}</span></div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label"><i class="bi bi-currency-rupee"></i> Cost Details</div>
+                    <div class="detail-value">
+                        <div>Estimated: ₹${Number(lead.cost_estimate || 0).toLocaleString()}</div>
+                        <div>Final: ₹${Number(lead.final_cost || 0).toLocaleString()}</div>
+                        <div>Advance: ₹${Number(lead.advance_paid || 0).toLocaleString()}</div>
+                        <div>Payment: <span class="badge bg-info">${lead.payment_status || 'Pending'}</span></div>
+                    </div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label"><i class="bi bi-calendar-event"></i> Important Dates</div>
+                    <div class="detail-value">
+                        <div>Created: ${new Date(lead.created_at).toLocaleDateString()}</div>
+                        <div>${daysOld} days ago</div>
+                        ${lead.shifting_date ? `<div>Shifting: ${lead.shifting_date}</div>` : ''}
+                        ${lead.followup_date ? `<div>Follow-up: ${lead.followup_date}</div>` : ''}
+                    </div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label"><i class="bi bi-truck"></i> Vehicle & Driver</div>
+                    <div class="detail-value">
+                        <div>Vehicle: ${lead.vehicle_assigned || 'Not Assigned'}</div>
+                        <div>Driver: ${lead.driver_name || '—'} ${lead.driver_phone ? `(${lead.driver_phone})` : ''}</div>
+                        ${lead.goods_description ? `<div>Goods: ${escapeHtml(lead.goods_description)}</div>` : ''}
+                    </div>
+                </div>
+                <div class="detail-section col-span-2">
+                    <div class="detail-label"><i class="bi bi-chat-text"></i> Notes</div>
+                    <div class="detail-value">${escapeHtml(lead.notes) || 'No notes added'}</div>
+                </div>
+            </div>
+            
+            <div class="detail-section">
+                <div class="detail-label"><i class="bi bi-chat-dots"></i> Call Logs</div>
+                <div id="callLogsModalContent" class="call-logs-container">
+                    <div class="text-center text-muted">Loading call logs...</div>
+                </div>
+                <div class="new-call-input mt-2">
+                    <textarea id="modalCallNote" class="form-control form-control-sm" rows="2" placeholder="Add new call note..."></textarea>
+                    <button id="saveModalCallLog" class="btn btn-primary btn-sm mt-2 w-100" data-id="${lead.id}" data-name="${escapeHtml(lead.name)}">
+                        <i class="bi bi-save"></i> Save Call Log
+                    </button>
+                </div>
+            </div>
+            
+            <div class="modal-action-buttons">
+                <button class="modal-action-btn btn-edit-modal" id="modalEditBtn" data-id="${lead.id}">
+                    <i class="bi bi-pencil-square"></i> Edit Lead
+                </button>
+                <button class="modal-action-btn btn-call-modal" id="modalCallBtn" data-phone="${lead.phone}">
+                    <i class="bi bi-telephone-fill"></i> Call
+                </button>
+                <button class="modal-action-btn btn-whatsapp-modal" id="modalWhatsAppBtn" data-phone="${lead.phone}">
+                    <i class="bi bi-whatsapp"></i> WhatsApp
+                </button>
+                <button class="modal-action-btn btn-delete-modal" id="modalDeleteBtn" data-id="${lead.id}" data-name="${escapeHtml(lead.name)}">
+                    <i class="bi bi-trash3"></i> Delete
+                </button>
+            </div>
+        `;
+        
+        modal.show();
+        
+        // Load call logs
+        loadCallLogsInModal(lead.id);
+        
+        // Attach event listeners for modal buttons
+        document.getElementById('modalEditBtn').addEventListener('click', () => {
+            modal.hide();
+            openEditModal(lead);
+        });
+        
+        document.getElementById('modalCallBtn').addEventListener('click', () => {
+            window.location.href = `tel:${lead.phone}`;
+        });
+        
+        document.getElementById('modalWhatsAppBtn').addEventListener('click', () => {
+            window.open(`https://wa.me/91${lead.phone}`, '_blank');
+        });
+        
+        document.getElementById('modalDeleteBtn').addEventListener('click', async (e) => {
+            if(confirm(`Delete ${lead.name} permanently?`)) {
+                const res = await fetch(`/delete_lead/${lead.id}`);
+                if(res.ok) {
+                    showToast('✓ Lead deleted! Refreshing...', 'success');
+                    modal.hide();
+                    setTimeout(() => refreshPage(), 500);
+                } else {
+                    showToast('Failed to delete', 'error');
+                }
+            }
+        });
+        
+        const saveBtn = document.getElementById('saveModalCallLog');
+        saveBtn.addEventListener('click', async () => {
+            const note = document.getElementById('modalCallNote').value.trim();
+            if(!note) {
+                showToast('Please enter a call note', 'error');
+                return;
+            }
+            const success = await addCallLog(lead.id, note);
+            if(success) {
+                showToast('✓ Call log added!', 'success');
+                document.getElementById('modalCallNote').value = '';
+                await loadCallLogsInModal(lead.id);
+            } else {
+                showToast('Failed to add call log', 'error');
+            }
+        });
+    }
+    
+    async function loadCallLogsInModal(leadId) {
+        const container = document.getElementById('callLogsModalContent');
         const logs = await fetchCallLogs(leadId);
-        const container = document.getElementById('callLogList');
         
         if(logs.length === 0) {
             container.innerHTML = '<div class="text-center text-muted py-3"><i class="bi bi-chat-dots"></i><br>No call logs yet</div>';
         } else {
             container.innerHTML = logs.map(log => `
-                <div class="call-log-item">
-                    <div class="call-log-time">
-                        <i class="bi bi-clock"></i> ${log.timestamp || new Date(log.created_at).toLocaleString()}
-                    </div>
-                    <div class="call-log-note">
-                        <i class="bi bi-chat-text"></i> ${escapeHtml(log.note || 'No note')}
-                    </div>
+                <div class="call-log-item-modal">
+                    <div class="call-log-time-modal"><i class="bi bi-clock"></i> ${log.timestamp || new Date(log.created_at).toLocaleString()}</div>
+                    <div class="call-log-note-modal"><i class="bi bi-chat-text"></i> ${escapeHtml(log.note || 'No note')}</div>
                 </div>
             `).join('');
         }
     }
 
-    // Save new call log
-    async function saveCallLog() {
-        const note = document.getElementById('newCallNote').value.trim();
-        if(!note) {
-            showToast('Please enter call notes', 'error');
-            return;
-        }
+    function openEditModal(lead) {
+        document.getElementById('edit_lead_id').value = lead.id;
+        document.getElementById('edit_name').value = lead.name || '';
+        document.getElementById('edit_phone').value = lead.phone || '';
+        document.getElementById('edit_alt_phone').value = lead.alternate_phone || '';
+        document.getElementById('edit_source').value = lead.source || 'Google Adsense';
+        document.getElementById('edit_status').value = lead.status || 'New Lead';
+        document.getElementById('edit_cost').value = lead.cost_estimate || 0;
+        document.getElementById('edit_final').value = lead.final_cost || 0;
+        document.getElementById('edit_from').value = lead.from_location || '';
+        document.getElementById('edit_to').value = lead.to_location || '';
+        document.getElementById('edit_shifting_date').value = lead.shifting_date || '';
+        document.getElementById('edit_followup').value = lead.followup_date || '';
+        document.getElementById('edit_notes').value = lead.notes || '';
         
-        if(!currentCallLogLeadId) {
-            showToast('Error: No lead selected', 'error');
-            return;
-        }
-        
-        try {
-            const formData = new URLSearchParams();
-            formData.append('call_note', note);
-            
-            const res = await fetch(`/add_call_log/${currentCallLogLeadId}`, { 
-                method: 'POST', 
-                body: formData 
-            });
-            
-            if(res.ok) {
-                showToast(`✓ Call log added for ${currentCallLogLeadName}`, 'success');
-                // Refresh the call logs display
-                await displayCallLogs(currentCallLogLeadId, currentCallLogLeadName);
-                // Also refresh main leads data
-                await initialLoad();
-            } else {
-                const errorText = await res.text();
-                showToast(`Failed to save call log: ${errorText}`, 'error');
-            }
-        } catch(err) {
-            console.error("Error saving call log:", err);
-            showToast('Error saving call log', 'error');
-        }
+        const editModal = new bootstrap.Modal(document.getElementById('editModalGlobal'));
+        editModal.show();
     }
 
     async function initialLoad() {
         try {
-            const timestamp = new Date().getTime();
-            const res = await fetch('/api/leads?t=' + timestamp);
+            const res = await fetch('/api/leads?t=' + Date.now());
             if(res.ok) {
                 leadsData = await res.json();
-                leadsData.sort((a, b) => {
-                    const dateA = new Date(a.created_at);
-                    const dateB = new Date(b.created_at);
-                    return dateB - dateA;
-                });
+                leadsData.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
                 renderLeadsAndStats();
             } else if(window.initialLeads) {
                 leadsData = window.initialLeads;
                 leadsData.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
                 renderLeadsAndStats();
             }
-        } catch(e) {
-            console.error("Initial load error:", e);
-        }
+        } catch(e) { console.error("Initial load error:", e); }
     }
 
     function filterByDateRange(lead) {
         if(!dateRangeStart && !dateRangeEnd) return true;
         if(!lead.created_at) return false;
         const leadDate = new Date(lead.created_at);
-        leadDate.setHours(0, 0, 0, 0);
-        
-        if(dateRangeStart && dateRangeEnd) {
-            const start = new Date(dateRangeStart);
-            start.setHours(0, 0, 0, 0);
-            const end = new Date(dateRangeEnd);
-            end.setHours(23, 59, 59, 999);
-            return leadDate >= start && leadDate <= end;
-        } else if(dateRangeStart) {
-            const start = new Date(dateRangeStart);
-            start.setHours(0, 0, 0, 0);
-            return leadDate >= start;
-        } else if(dateRangeEnd) {
-            const end = new Date(dateRangeEnd);
-            end.setHours(23, 59, 59, 999);
-            return leadDate <= end;
-        }
+        if(dateRangeStart && dateRangeEnd) return leadDate >= dateRangeStart && leadDate <= dateRangeEnd;
+        if(dateRangeStart) return leadDate >= dateRangeStart;
+        if(dateRangeEnd) return leadDate <= dateRangeEnd;
         return true;
     }
 
     function renderLeadsAndStats() {
         if(!leadsData || leadsData.length === 0) {
-            document.getElementById('leadsListContainer').innerHTML = `
-                <div class="text-center p-4 bg-white rounded-3">
-                    <i class="bi bi-inbox fs-3 text-muted"></i>
-                    <p class="mt-2 text-muted small">No leads yet. Click + to add your first lead!</p>
-                </div>`;
+            document.getElementById('leadsListContainer').innerHTML = `<div class="text-center p-4 bg-white rounded-3"><i class="bi bi-inbox fs-3 text-muted"></i><p class="mt-2 text-muted small">No leads yet. Click + to add your first lead!</p></div>`;
             document.getElementById('leadCountSpan').innerText = "0";
-            document.getElementById('statsContainer').innerHTML = `
-                <div class="stat-card"><i class="bi bi-people-fill text-primary"></i><div class="stat-number">0</div><div class="stat-label">LEADS</div></div>
-                <div class="stat-card"><i class="bi bi-google text-danger"></i><div class="stat-number">0</div><div class="stat-label">ADSENSE</div></div>
-                <div class="stat-card"><i class="bi bi-building text-info"></i><div class="stat-number">0</div><div class="stat-label">JUSTDIAL</div></div>
-                <div class="stat-card"><i class="bi bi-whatsapp text-success"></i><div class="stat-number">0</div><div class="stat-label">WHATSAPP</div></div>`;
             return;
         }
         
         let filtered = leadsData.filter(lead => {
             if(statusFilter !== "all" && lead.status !== statusFilter) return false;
-            if(searchTerm !== "") {
-                const haystack = (lead.name + " " + lead.phone + " " + (lead.from_location||"") + " " + (lead.to_location||"")).toLowerCase();
-                if(!haystack.includes(searchTerm.toLowerCase())) return false;
-            }
+            if(searchTerm && !(lead.name + " " + lead.phone + " " + (lead.from_location||"") + " " + (lead.to_location||"")).toLowerCase().includes(searchTerm.toLowerCase())) return false;
             if(!filterByDateRange(lead)) return false;
             return true;
         });
@@ -868,7 +913,7 @@
         container.innerHTML = filtered.map(lead => {
             const daysOld = lead.created_at ? Math.floor((new Date() - new Date(lead.created_at)) / (1000*60*60*24)) : 0;
             return `
-            <div class="lead-card">
+            <div class="lead-card" data-lead-id="${lead.id}">
                 <div class="lead-header">
                     <div class="customer-name">
                         <i class="bi bi-person-circle" style="font-size:0.7rem;"></i> ${escapeHtml(lead.name)}
@@ -878,7 +923,6 @@
                 </div>
                 <div class="phone-group">
                     <a href="tel:${lead.phone}" class="phone-link"><i class="bi bi-telephone-fill"></i> ${lead.phone}</a>
-                    ${lead.alternate_phone ? `<a href="tel:${lead.alternate_phone}" class="phone-link"><i class="bi bi-phone"></i> ${lead.alternate_phone}</a>` : ''}
                     <a href="https://wa.me/91${lead.phone}" target="_blank" class="phone-link whatsapp-link"><i class="bi bi-whatsapp"></i> Chat</a>
                 </div>
                 <div class="location-row">
@@ -888,109 +932,33 @@
                     <div class="cost-badge">₹${Number(lead.cost_estimate || 0).toLocaleString()}</div>
                     <div class="date-badge"><i class="bi bi-clock"></i> ${daysOld}d ago</div>
                 </div>
-                <div class="action-icons">
-                    <button class="action-icon edit-lead-btn" data-id="${lead.id}" data-name="${escapeHtml(lead.name)}" data-phone="${lead.phone}" data-alt="${lead.alternate_phone || ''}" data-source="${lead.source || 'Google Adsense'}" data-status="${lead.status || 'New Lead'}" data-from="${lead.from_location || ''}" data-to="${lead.to_location || ''}" data-cost="${lead.cost_estimate || 0}" data-final="${lead.final_cost || 0}" data-advance="${lead.advance_paid || 0}" data-payment="${lead.payment_status || 'Pending'}" data-shifting="${lead.shifting_date || ''}" data-followup="${lead.followup_date || ''}" data-notes="${escapeHtml(lead.notes || '')}"><i class="bi bi-pencil-square"></i> Edit</button>
-                    <button class="action-icon call-logger-btn" data-id="${lead.id}" data-name="${escapeHtml(lead.name)}"><i class="bi bi-chat-text"></i> Log</button>
-                    <button class="action-icon text-danger delete-lead-btn" data-id="${lead.id}"><i class="bi bi-trash3"></i> Del</button>
-                </div>
+                <button class="expand-btn" data-lead-id="${lead.id}">
+                    <i class="bi bi-eye-fill"></i> View Details
+                </button>
             </div>
         `}).join('');
         
-        attachEventListeners();
-    }
-
-    function attachEventListeners() {
-        document.querySelectorAll('.edit-lead-btn').forEach(btn => {
-            btn.removeEventListener('click', handleEditClick);
-            btn.addEventListener('click', handleEditClick);
+        // Attach click handlers for expand buttons
+        document.querySelectorAll('.expand-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const leadId = parseInt(btn.dataset.leadId);
+                const lead = leadsData.find(l => l.id === leadId);
+                if(lead) openDetailModal(lead);
+            });
         });
         
-        document.querySelectorAll('.call-logger-btn').forEach(btn => {
-            btn.removeEventListener('click', handleCallLogClick);
-            btn.addEventListener('click', handleCallLogClick);
+        // Also attach click handler to the whole card
+        document.querySelectorAll('.lead-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                // Don't trigger if clicking on phone links or expand button
+                if(e.target.closest('.phone-link')) return;
+                if(e.target.closest('.expand-btn')) return;
+                const leadId = parseInt(card.dataset.leadId);
+                const lead = leadsData.find(l => l.id === leadId);
+                if(lead) openDetailModal(lead);
+            });
         });
-        
-        document.querySelectorAll('.delete-lead-btn').forEach(btn => {
-            btn.removeEventListener('click', handleDeleteClick);
-            btn.addEventListener('click', handleDeleteClick);
-        });
-    }
-    
-    async function handleDeleteClick(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        const id = e.currentTarget.dataset.id;
-        
-        if(confirm('Delete this lead permanently?')) {
-            try {
-                const res = await fetch(`/delete_lead/${id}`);
-                if(res.ok) {
-                    showToast('✓ Lead deleted! Refreshing page...', 'success');
-                    setTimeout(() => refreshPage(), 500);
-                } else {
-                    showToast('Failed to delete lead', 'error');
-                }
-            } catch(err) {
-                showToast('Error deleting lead', 'error');
-            }
-        }
-    }
-    
-    function handleEditClick(e) {
-        e.stopPropagation();
-        const btn = e.currentTarget;
-        const id = parseInt(btn.dataset.id);
-        
-        let lead = leadsData.find(l => l.id === id);
-        if(!lead) {
-            lead = {
-                id: id,
-                name: btn.dataset.name,
-                phone: btn.dataset.phone,
-                alternate_phone: btn.dataset.alt,
-                source: btn.dataset.source,
-                status: btn.dataset.status,
-                from_location: btn.dataset.from,
-                to_location: btn.dataset.to,
-                cost_estimate: btn.dataset.cost,
-                final_cost: btn.dataset.final,
-                advance_paid: btn.dataset.advance,
-                payment_status: btn.dataset.payment,
-                shifting_date: btn.dataset.shifting,
-                followup_date: btn.dataset.followup,
-                notes: btn.dataset.notes
-            };
-        }
-        openEditModal(lead);
-    }
-    
-    async function handleCallLogClick(e) {
-        e.stopPropagation();
-        const id = e.currentTarget.dataset.id;
-        const name = e.currentTarget.dataset.name;
-        
-        const callLogModal = new bootstrap.Modal(document.getElementById('callLogModal'));
-        await displayCallLogs(id, name);
-        callLogModal.show();
-    }
-
-    function openEditModal(lead) {
-        document.getElementById('edit_lead_id').value = lead.id;
-        document.getElementById('edit_name').value = lead.name || '';
-        document.getElementById('edit_phone').value = lead.phone || '';
-        document.getElementById('edit_alt_phone').value = lead.alternate_phone || '';
-        document.getElementById('edit_source').value = lead.source || 'Google Adsense';
-        document.getElementById('edit_status').value = lead.status || 'New Lead';
-        document.getElementById('edit_cost').value = lead.cost_estimate || 0;
-        document.getElementById('edit_final').value = lead.final_cost || 0;
-        document.getElementById('edit_from').value = lead.from_location || '';
-        document.getElementById('edit_to').value = lead.to_location || '';
-        document.getElementById('edit_shifting_date').value = lead.shifting_date || '';
-        document.getElementById('edit_followup').value = lead.followup_date || '';
-        document.getElementById('edit_notes').value = lead.notes || '';
-        
-        const editModal = new bootstrap.Modal(document.getElementById('editModalGlobal'));
-        editModal.show();
     }
 
     document.getElementById('editFormDynamic').addEventListener('submit', async (e) => {
@@ -999,17 +967,13 @@
         try {
             const res = await fetch(`/edit_lead/${formData.get('lead_id')}`, { method: 'POST', body: formData });
             if(res.ok) {
-                showToast('✓ Lead updated! Refreshing page...', 'success');
+                showToast('✓ Lead updated! Refreshing...', 'success');
                 bootstrap.Modal.getInstance(document.getElementById('editModalGlobal')).hide();
                 setTimeout(() => refreshPage(), 500);
             } else {
-                const text = await res.text();
-                if(text.includes("Duplicate")) showToast('⚠️ Duplicate phone number', 'error');
-                else showToast('Update failed', 'error');
+                showToast('Update failed', 'error');
             }
-        } catch(err) {
-            showToast('Error updating lead', 'error');
-        }
+        } catch(err) { showToast('Error updating lead', 'error'); }
     });
 
     document.getElementById('addLeadForm').addEventListener('submit', async (e) => {
@@ -1018,26 +982,16 @@
         try {
             const res = await fetch('/add_lead', { method: 'POST', body: formData });
             if(res.ok) {
-                showToast('✓ Lead added! Refreshing page...', 'success');
+                showToast('✓ Lead added! Refreshing...', 'success');
                 bootstrap.Modal.getInstance(document.getElementById('addLeadModal')).hide();
                 e.target.reset();
                 setTimeout(() => refreshPage(), 500);
             } else {
                 const text = await res.text();
-                if(text.includes("Duplicate")) {
-                    showToast('⚠️ Duplicate phone number!', 'error');
-                } else {
-                    showToast('Failed to add lead', 'error');
-                }
+                if(text.includes("Duplicate")) showToast('⚠️ Duplicate phone number!', 'error');
+                else showToast('Failed to add lead', 'error');
             }
-        } catch(err) {
-            showToast('Error adding lead', 'error');
-        }
-    });
-
-    // Save call log button handler
-    document.getElementById('saveCallLogBtn').addEventListener('click', async () => {
-        await saveCallLog();
+        } catch(err) { showToast('Error adding lead', 'error'); }
     });
 
     function getStatusColor(status) {
@@ -1087,15 +1041,8 @@
         renderLeadsAndStats();
     });
 
-    document.getElementById('globalSearch').addEventListener('input', (e) => { 
-        searchTerm = e.target.value; 
-        renderLeadsAndStats(); 
-    });
-    
-    document.getElementById('statusFilterGlobal').addEventListener('change', (e) => { 
-        statusFilter = e.target.value; 
-        renderLeadsAndStats(); 
-    });
+    document.getElementById('globalSearch').addEventListener('input', (e) => { searchTerm = e.target.value; renderLeadsAndStats(); });
+    document.getElementById('statusFilterGlobal').addEventListener('change', (e) => { statusFilter = e.target.value; renderLeadsAndStats(); });
     
     initialLoad();
 
