@@ -371,27 +371,15 @@
             }
         }
 
-        /* Live indicator - small dot showing auto-refresh is active */
-        .live-indicator {
+        /* Auto-refresh indicator */
+        .auto-refresh-badge {
             display: inline-block;
-            width: 8px;
-            height: 8px;
-            background-color: #10b981;
-            border-radius: 50%;
-            margin-left: 6px;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
-            }
-            70% {
-                box-shadow: 0 0 0 5px rgba(16, 185, 129, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
-            }
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            font-size: 0.55rem;
+            padding: 2px 6px;
+            border-radius: 20px;
+            margin-left: 8px;
         }
 
         @media (min-width: 768px) {
@@ -429,7 +417,7 @@
         <div>
             <span class="badge bg-white text-dark px-2 py-1 rounded-pill" style="font-size: 0.55rem;">
                 <i class="bi bi-cloud-check"></i> Live
-                <span class="live-indicator"></span>
+                <span class="auto-refresh-badge">auto-refresh ON</span>
             </span>
         </div>
     </div>
@@ -446,7 +434,6 @@
     <div class="action-bar">
         <h6 class="m-0 fw-bold" style="font-size: 0.75rem;">
             <i class="bi bi-people-fill me-1"></i> <span id="leadCountSpan">0</span> Leads
-            <small class="text-muted" style="font-size: 0.55rem;">(auto-refresh 0.1s)</small>
         </h6>
         <div class="d-flex gap-2">
             <a href="/export_excel" id="exportBtn" class="btn btn-outline-success btn-compact"><i class="bi bi-file-earmark-spreadsheet"></i> Export</a>
@@ -477,7 +464,7 @@
     </div>
 
     <div id="leadsListContainer">
-        <!-- Leads will appear here automatically -->
+        <!-- Leads will appear here -->
     </div>
 </div>
 
@@ -639,7 +626,7 @@
     let dateRangeStart = null;
     let dateRangeEnd = null;
     let isRefreshing = false;
-    let refreshInterval = null;
+    let autoRefreshInterval = null;
 
     function showToast(msg, type) {
         const container = document.getElementById('toastContainer');
@@ -654,11 +641,18 @@
         toast.style.fontWeight = '600';
         toast.innerHTML = `<div class="d-flex align-items-center gap-2"><i class="bi ${icon}"></i><div class="flex-grow-1">${msg}</div><button type="button" class="btn-close btn-close-white btn-sm" onclick="this.parentElement.parentElement.remove()"></button></div>`;
         container.appendChild(toast);
+        
+        // Auto remove after 3 seconds
         setTimeout(() => toast.remove(), 3000);
     }
 
-    // Ultra-fast auto refresh every 0.1 seconds (100ms)
-    async function autoRefresh() {
+    // Function to refresh page automatically
+    function refreshPage() {
+        window.location.reload();
+    }
+
+    // Fetch and check if data changed (for auto-refresh)
+    async function checkAndRefresh() {
         if(isRefreshing) return;
         isRefreshing = true;
         
@@ -676,34 +670,34 @@
                 
                 // Check if data changed
                 const dataChanged = JSON.stringify(leadsData) !== JSON.stringify(newData);
-                if(dataChanged || leadsData.length === 0) {
-                    leadsData = newData;
-                    renderLeadsAndStats();
+                if(dataChanged && leadsData.length > 0) {
+                    console.log("Data changed, refreshing page...");
+                    refreshPage();
+                } else if(leadsData.length === 0 && newData.length > 0) {
+                    console.log("New data available, refreshing page...");
+                    refreshPage();
                 }
             }
         } catch(e) { 
-            // Silent fail - no error messages to user
-            console.error("Auto-refresh error:", e);
+            console.error("Auto-refresh check error:", e);
         } finally {
             isRefreshing = false;
         }
     }
 
-    // Start auto-refresh every 0.1 seconds
+    // Start auto-refresh checking every 2 seconds
     function startAutoRefresh() {
-        if(refreshInterval) clearInterval(refreshInterval);
-        refreshInterval = setInterval(() => {
-            autoRefresh();
-        }, 100); // 100 milliseconds = 0.1 seconds
-        console.log("Auto-refresh started: every 0.1 seconds");
+        if(autoRefreshInterval) clearInterval(autoRefreshInterval);
+        autoRefreshInterval = setInterval(() => {
+            checkAndRefresh();
+        }, 2000); // Check every 2 seconds if data changed
+        console.log("Auto-refresh checker started (every 2 seconds)");
     }
 
-    // Stop auto-refresh (if needed)
     function stopAutoRefresh() {
-        if(refreshInterval) {
-            clearInterval(refreshInterval);
-            refreshInterval = null;
-            console.log("Auto-refresh stopped");
+        if(autoRefreshInterval) {
+            clearInterval(autoRefreshInterval);
+            autoRefreshInterval = null;
         }
     }
 
@@ -835,8 +829,10 @@
             try {
                 const res = await fetch(`/delete_lead/${id}`);
                 if(res.ok) {
-                    showToast('✓ Lead deleted successfully!', 'success');
-                    // Auto-refresh will pick up the change in 0.1 seconds
+                    showToast('✓ Lead deleted! Refreshing page...', 'success');
+                    setTimeout(() => {
+                        refreshPage();
+                    }, 500);
                 } else {
                     showToast('Failed to delete lead', 'error');
                 }
@@ -885,8 +881,10 @@
             try {
                 const res = await fetch(`/add_call_log/${id}`, { method: 'POST', body: formData });
                 if(res.ok) {
-                    showToast(`✓ Call log added for ${name}`, 'success');
-                    // Auto-refresh will pick up the change
+                    showToast(`✓ Call log added for ${name}! Refreshing...`, 'success');
+                    setTimeout(() => {
+                        refreshPage();
+                    }, 500);
                 } else {
                     showToast('Failed to save log', 'error');
                 }
@@ -921,9 +919,11 @@
         try {
             const res = await fetch(`/edit_lead/${formData.get('lead_id')}`, { method: 'POST', body: formData });
             if(res.ok) {
-                showToast('✓ Lead updated successfully!', 'success');
+                showToast('✓ Lead updated! Refreshing page...', 'success');
                 bootstrap.Modal.getInstance(document.getElementById('editModalGlobal')).hide();
-                // Auto-refresh will pick up the change
+                setTimeout(() => {
+                    refreshPage();
+                }, 500);
             } else {
                 const text = await res.text();
                 if(text.includes("Duplicate")) showToast('⚠️ Duplicate phone number', 'error');
@@ -940,10 +940,12 @@
         try {
             const res = await fetch('/add_lead', { method: 'POST', body: formData });
             if(res.ok) {
-                showToast('✓ Lead added successfully!', 'success');
+                showToast('✓ Lead added! Refreshing page...', 'success');
                 bootstrap.Modal.getInstance(document.getElementById('addLeadModal')).hide();
                 e.target.reset();
-                // Auto-refresh will pick up the new lead
+                setTimeout(() => {
+                    refreshPage();
+                }, 500);
             } else {
                 const text = await res.text();
                 if(text.includes("Duplicate")) {
@@ -1014,21 +1016,33 @@
         renderLeadsAndStats(); 
     });
     
-    // Start auto-refresh on page load
-    startAutoRefresh();
-
-    // Initial load
-    autoRefresh();
-
-    // Optional: Stop auto-refresh when page is hidden (saves resources)
-    document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-            stopAutoRefresh();
-        } else {
-            startAutoRefresh();
-            autoRefresh(); // Immediate refresh when page becomes visible
+    // Initial data load
+    async function initialLoad() {
+        try {
+            const timestamp = new Date().getTime();
+            const res = await fetch('/api/leads?t=' + timestamp);
+            if(res.ok) {
+                leadsData = await res.json();
+                leadsData.sort((a, b) => {
+                    const dateA = new Date(a.created_at);
+                    const dateB = new Date(b.created_at);
+                    return dateB - dateA;
+                });
+                renderLeadsAndStats();
+            } else if(window.initialLeads) {
+                leadsData = window.initialLeads;
+                leadsData.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+                renderLeadsAndStats();
+            }
+        } catch(e) {
+            console.error("Initial load error:", e);
         }
-    });
+    }
+    
+    initialLoad();
+    
+    // Start auto-refresh checker
+    startAutoRefresh();
 
     {% if leads %}
     window.initialLeads = {{ leads | tojson | safe }};
