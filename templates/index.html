@@ -16,7 +16,6 @@
             padding-bottom: 65px;
         }
         
-        /* Compact Navbar with Full Brand Name */
         .navbar-modern {
             background: linear-gradient(135deg, #0f172a, #1e293b);
             padding: 8px 0;
@@ -26,10 +25,9 @@
         }
         
         .brand-icon { font-size: 1.1rem; margin-right: 8px; }
-        .brand-name { font-size: 0.85rem; font-weight: 700; letter-spacing: 0.3px; }
+        .brand-name { font-size: 0.85rem; font-weight: 700; }
         .brand-sub { font-size: 0.5rem; opacity: 0.8; margin-top: 1px; }
         
-        /* Ultra Compact Stats */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -46,10 +44,9 @@
         }
         
         .stat-card i { font-size: 1rem; margin-bottom: 2px; display: block; }
-        .stat-label { font-size: 7px; font-weight: 700; color: #64748b; letter-spacing: 0.3px; }
+        .stat-label { font-size: 7px; font-weight: 700; color: #64748b; }
         .stat-number { font-size: 1rem; font-weight: 800; color: #0f172a; }
         
-        /* Compact Action Bar */
         .action-bar {
             display: flex;
             justify-content: space-between;
@@ -64,7 +61,6 @@
             font-weight: 600;
         }
         
-        /* Compact Filters */
         .filter-row-horizontal {
             display: flex;
             gap: 6px;
@@ -125,7 +121,6 @@
         .calendar-trigger i { font-size: 0.7rem; color: #1e293b; }
         .calendar-trigger span { font-size: 0.7rem; font-weight: 500; color: #0f172a; }
         
-        /* Super Compact Lead Cards */
         .lead-card {
             background: white;
             border-radius: 12px;
@@ -240,7 +235,6 @@
         
         .expand-btn:active { transform: scale(0.97); }
         
-        /* Mobile FAB */
         .fab-add {
             position: fixed;
             bottom: 15px;
@@ -262,7 +256,6 @@
         
         .fab-add:active { transform: scale(0.95); }
         
-        /* Toast */
         .toast-notification {
             position: fixed;
             top: 60px;
@@ -277,7 +270,71 @@
             to { transform: translateY(0); opacity: 1; }
         }
         
-        /* Modal Styles */
+        /* Duplicate Alert Modal */
+        .duplicate-modal .modal-content {
+            border-radius: 24px;
+            overflow: hidden;
+        }
+        
+        .duplicate-modal .modal-header {
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+            color: white;
+            border: none;
+            padding: 16px 20px;
+        }
+        
+        .duplicate-modal .modal-body {
+            padding: 20px;
+        }
+        
+        .duplicate-info-card {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .duplicate-label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        
+        .duplicate-value {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+        
+        .duplicate-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .btn-cancel-add {
+            flex: 1;
+            padding: 10px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-cancel {
+            background: #e2e8f0;
+            color: #475569;
+        }
+        
+        .btn-view-existing {
+            background: #3b82f6;
+            color: white;
+        }
+        
         .professional-modal .modal-content {
             border-radius: 24px;
             overflow: hidden;
@@ -335,14 +392,12 @@
         .call-log-note { font-size: 0.7rem; color: #0f172a; font-weight: 500; }
         
         .modal-action-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
-        .modal-action-btn { flex: 1; padding: 10px; border-radius: 30px; font-weight: 700; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; gap: 6px; border: none; cursor: pointer; }
+        .modal-action-btn { flex: 1; padding: 10px; border-radius: 30px; font-weight: 600; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; gap: 6px; border: none; cursor: pointer; }
         .btn-edit-modal { background: #3b82f6; color: white; }
         .btn-call-modal { background: #10b981; color: white; }
         .btn-whatsapp-modal { background: #25D366; color: white; }
         .btn-delete-modal { background: #ef4444; color: white; }
-        .modal-action-btn:active { transform: scale(0.97); }
         
-        /* Edit Modal Fixes */
         .edit-modal-fixed .modal-dialog { margin: 10px; max-width: calc(100% - 20px); }
         .edit-modal-fixed .modal-body { max-height: 65vh; overflow-y: auto; padding: 15px; }
         .form-label { font-size: 0.65rem; margin-bottom: 2px; font-weight: 600; }
@@ -424,8 +479,8 @@
             <form id="addLeadForm">
                 <div class="modal-body">
                     <div class="row g-2">
-                        <div class="col-12"><label class="form-label">Full Name *</label><input type="text" name="name" class="form-control form-control-sm" required></div>
-                        <div class="col-12"><label class="form-label">Phone Number *</label><input type="tel" name="phone" class="form-control form-control-sm" required></div>
+                        <div class="col-12"><label class="form-label">Full Name *</label><input type="text" name="name" id="newLeadName" class="form-control form-control-sm" required></div>
+                        <div class="col-12"><label class="form-label">Phone Number *</label><input type="tel" name="phone" id="newLeadPhone" class="form-control form-control-sm" required></div>
                         <div class="col-12"><label class="form-label">Source</label><select name="source" class="form-select form-select-sm">{% for src in sources %}<option>{{ src }}</option>{% endfor %}</select></div>
                         <div class="col-12"><label class="form-label">Status</label><select name="status" class="form-select form-select-sm">{% for st in statuses %}<option>{{ st }}</option>{% endfor %}</select></div>
                         <div class="col-6"><label class="form-label">From</label><input type="text" name="from_location" class="form-control form-control-sm" placeholder="City"></div>
@@ -440,6 +495,52 @@
                     <button type="submit" class="btn btn-sm btn-primary px-2">Save Lead</button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+<!-- Duplicate Lead Alert Modal -->
+<div class="modal fade duplicate-modal" id="duplicateAlertModal" tabindex="-1" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h6 class="modal-title m-0"><i class="bi bi-exclamation-triangle-fill me-2"></i>Duplicate Phone Number Found!</h6>
+                    <small style="font-size: 0.6rem;">This number already exists in your database</small>
+                </div>
+                <button type="button" class="btn-close btn-close-white btn-sm" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="duplicate-info-card">
+                    <div class="duplicate-label"><i class="bi bi-person"></i> Customer Name</div>
+                    <div class="duplicate-value" id="dupName">-</div>
+                    
+                    <div class="duplicate-label mt-3"><i class="bi bi-telephone"></i> Phone Number</div>
+                    <div class="duplicate-value" id="dupPhone">-</div>
+                    
+                    <div class="duplicate-label mt-3"><i class="bi bi-geo-alt"></i> Location</div>
+                    <div class="duplicate-value" id="dupLocation">-</div>
+                    
+                    <div class="duplicate-label mt-3"><i class="bi bi-tag"></i> Source & Status</div>
+                    <div class="duplicate-value" id="dupSourceStatus">-</div>
+                    
+                    <div class="duplicate-label mt-3"><i class="bi bi-calendar"></i> Added On</div>
+                    <div class="duplicate-value" id="dupDate">-</div>
+                </div>
+                
+                <div class="alert alert-warning" style="font-size: 0.7rem; border-radius: 12px;">
+                    <i class="bi bi-info-circle"></i> You cannot add the same phone number twice. Please use a different number or edit the existing lead.
+                </div>
+                
+                <div class="duplicate-actions">
+                    <button class="btn-cancel-add btn-cancel" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Cancel Add
+                    </button>
+                    <button class="btn-cancel-add btn-view-existing" id="viewExistingLeadBtn">
+                        <i class="bi bi-eye"></i> View Existing Lead
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -503,6 +604,7 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
     let leadsData = [], statusFilter = "all", searchTerm = "", dateRangeStart = null, dateRangeEnd = null, currentEditModal = null;
+    let pendingDuplicateLead = null;
 
     function showToast(msg, type) {
         const container = document.getElementById('toastContainer');
@@ -538,6 +640,29 @@
     }
 
     function getInitials(name) { return name ? name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) : '?'; }
+
+    // Check for duplicate before saving
+    async function checkDuplicateBeforeSave(formData) {
+        const phone = formData.get('phone');
+        const existingLead = leadsData.find(lead => lead.phone === phone);
+        
+        if(existingLead) {
+            // Store pending form data
+            pendingDuplicateLead = { formData, existingLead };
+            
+            // Show duplicate alert modal with existing lead details
+            document.getElementById('dupName').innerHTML = `<i class="bi bi-person-circle me-1"></i> ${escapeHtml(existingLead.name)}`;
+            document.getElementById('dupPhone').innerHTML = `<i class="bi bi-telephone me-1"></i> ${existingLead.phone}`;
+            document.getElementById('dupLocation').innerHTML = `<i class="bi bi-geo-alt me-1"></i> ${escapeHtml(existingLead.from_location) || '—'} → ${escapeHtml(existingLead.to_location) || '—'}`;
+            document.getElementById('dupSourceStatus').innerHTML = `<span class="badge bg-secondary">${escapeHtml(existingLead.source)}</span> → <span class="badge" style="background:${getStatusColor(existingLead.status)}">${existingLead.status}</span>`;
+            document.getElementById('dupDate').innerHTML = `<i class="bi bi-calendar me-1"></i> ${new Date(existingLead.created_at).toLocaleDateString()}`;
+            
+            const duplicateModal = new bootstrap.Modal(document.getElementById('duplicateAlertModal'));
+            duplicateModal.show();
+            return false;
+        }
+        return true;
+    }
 
     function openDetailModal(lead) {
         const modal = new bootstrap.Modal(document.getElementById('detailModal'));
@@ -655,6 +780,22 @@
         currentEditModal.show();
     }
 
+    function performAddLead(formData) {
+        fetch('/add_lead', { method: 'POST', body: formData })
+            .then(async res => {
+                if(res.ok) {
+                    showToast('✓ Lead added successfully!', 'success');
+                    bootstrap.Modal.getInstance(document.getElementById('addLeadModal')).hide();
+                    document.getElementById('addLeadForm').reset();
+                    setTimeout(() => refreshPage(), 500);
+                } else {
+                    const text = await res.text();
+                    showToast(text.includes('Duplicate') ? '⚠️ Duplicate phone number' : 'Failed to add lead', 'error');
+                }
+            })
+            .catch(err => showToast('Error adding lead', 'error'));
+    }
+
     async function initialLoad() {
         try {
             const res = await fetch('/api/leads?t=' + Date.now());
@@ -721,6 +862,7 @@
         });
     }
 
+    // Edit form submit
     document.getElementById('editFormDynamic').addEventListener('submit', async (e) => {
         e.preventDefault();
         const res = await fetch(`/edit_lead/${document.getElementById('edit_lead_id').value}`, { method: 'POST', body: new FormData(e.target) });
@@ -728,11 +870,25 @@
         else showToast('Update failed', 'error');
     });
 
+    // Add lead form submit with duplicate check
     document.getElementById('addLeadForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-        const res = await fetch('/add_lead', { method: 'POST', body: new FormData(e.target) });
-        if(res.ok) { showToast('✓ Lead added', 'success'); bootstrap.Modal.getInstance(document.getElementById('addLeadModal')).hide(); e.target.reset(); setTimeout(() => refreshPage(), 500); }
-        else { const text = await res.text(); showToast(text.includes('Duplicate') ? '⚠️ Duplicate phone number' : 'Failed to add', 'error'); }
+        const formData = new FormData(e.target);
+        const isUnique = await checkDuplicateBeforeSave(formData);
+        if(isUnique) {
+            performAddLead(formData);
+        }
+    });
+
+    // View existing lead from duplicate modal
+    document.getElementById('viewExistingLeadBtn').addEventListener('click', () => {
+        if(pendingDuplicateLead && pendingDuplicateLead.existingLead) {
+            const duplicateModal = bootstrap.Modal.getInstance(document.getElementById('duplicateAlertModal'));
+            duplicateModal.hide();
+            setTimeout(() => {
+                openDetailModal(pendingDuplicateLead.existingLead);
+            }, 300);
+        }
     });
 
     function getStatusColor(status) {
